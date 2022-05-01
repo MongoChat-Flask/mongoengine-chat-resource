@@ -1,6 +1,7 @@
+import itsdangerous
 from flask import Blueprint
 
-from user.UserController import CreateUser
+from user.UserController import *
 
 # 建立(註冊)路由的函式
 UserRoutes = Blueprint('UserRoutes', __name__)
@@ -35,3 +36,16 @@ def edit():
 def delete():
     return "DeleteUser()"
 
+
+@UserRoutes.route('/sendtest', methods=['GET', 'POST'])
+def vaildation():
+    return Send_for_Activate()
+
+
+@UserRoutes.route('/sendtest/confirm/<token>', methods=['GET'])
+def Activate_account(token):
+    try:
+        email_from_url = s.loads(token, salt='MongoChat-Activate', max_age=60)
+        return "你的帳戶已激活!"
+    except itsdangerous.exc.SignatureExpired:
+        return "該連結已過期，請重新註冊!"
