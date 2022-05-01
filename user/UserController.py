@@ -52,27 +52,27 @@ def CreateUser():  # 這裡要添加<輸入參數>，以新增 'users' collectio
         }), 203
 
 
-def CheckUser():
+def CheckUser():  # login = (redirect_to聊天頁面) ? (有該帳號存在且經過驗證) : (重新導引至登入頁面並依狀況顯示其相應行為)
     return ""
 
 
-def VaildateUser():
+def VaildateUser():  # Vaildate = (redirect_to登入頁面) ? (點選其電子連結，通過驗證) : (超時，刪除過期註冊帳號)
     return ""
 
 
-def LogoutUser():
+def LogoutUser():  # Logout = (redirect_to登入頁面)
     return ""
 
 
-def EditUser():
+def EditUser():  # Edit = (redirect_to聊天頁面, 顯示成功通知懸浮窗) ? (編輯且提交成功) : (失敗、回推至初始狀態，redirect_to聊天頁面並顯示失敗通知)
     return ""
 
 
-def DeleteUser():
+def DeleteUser():  # Delete = (redirect_to登入頁面) ? (成功刪除帳號) : (失敗?，可能為Bug，need修復)
     return ""
 
 
-def PendingResponseByUser():
+def PendingResponseByUser(): # 還在思量中...
     return ""
 
 
