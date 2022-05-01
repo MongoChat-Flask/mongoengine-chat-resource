@@ -64,17 +64,24 @@ def LogoutUser():  # Logout = (redirect_to登入頁面)
     return ""
 
 
-def EditUser():  # Edit = (redirect_to聊天頁面, 顯示成功通知懸浮窗) ? (編輯且提交成功) : (失敗、回推至初始狀態，redirect_to聊天頁面並顯示失敗通知)
+def EditUser():  # Edit = (切至聊天頁面, 顯示成功通知懸浮窗) ? (編輯且提交成功) : (失敗、回推至初始狀態，redirect_to聊天頁面並顯示失敗通知)
     return ""
 
 
-def DeleteUser():  # Delete = (redirect_to登入頁面) ? (成功刪除帳號) : (失敗?，可能為Bug，need修復)
+def DeleteUser():  # Delete = (切至登入頁面) ? (成功刪除帳號) : (失敗?，可能為Bug，need修復)
     return ""
 
 
-def PendingResponseByUser(): # 還在思量中...
+def PendingRequest_from_Friend():
+    # PendingRequest = (Add Friend to list) ? (i allow[True]) : (i do not allow[False])
+    return ""
+
+
+def PendingRequest_from_Chatroom():
+    # PendingRequest = (Add ChatRoom to list) ? (i allow[True]) : (i do not allow[False])
     return ""
 
 
 def ReadUser():
+    # ReadUser = (切至User資訊頁面並顯示) ? (成功讀取User) : (Error:可能為伺服器錯誤)
     return ""
