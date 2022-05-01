@@ -10,3 +10,4 @@ class Users(Document):  # 資料model命名方式: Users -> users [In mongodb at
     Password = StringField(required=True, max_length=20, min_length=8)
     Friends = ListField(ReferenceField('self', reverse_delete_rule=CASCADE))
     ChatRooms = ListField()
+    EmailVaildated = BooleanField(default=False)

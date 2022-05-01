@@ -3,6 +3,7 @@ from mongo.mongo_setup import db
 from user.models import Users
 from flask import jsonify
 import mongoengine
+
 assert isinstance(db, object)
 
 
@@ -29,6 +30,7 @@ def CreateUser():  # 這裡要添加<輸入參數>，以新增 'users' collectio
             Password="42067423",
             Friends=[],
             ChatRooms=[],
+            EmailVaildated=False
         )
         user.save()
         if Users.objects(Account=user.Account):
@@ -48,3 +50,31 @@ def CreateUser():  # 這裡要添加<輸入參數>，以新增 'users' collectio
             "Error_msg": "請確認你輸入的資訊無誤!",
             "HTTP": 111
         }), 203
+
+
+def CheckUser():
+    return ""
+
+
+def VaildateUser():
+    return ""
+
+
+def LogoutUser():
+    return ""
+
+
+def EditUser():
+    return ""
+
+
+def DeleteUser():
+    return ""
+
+
+def PendingResponseByUser():
+    return ""
+
+
+def ReadUser():
+    return ""
