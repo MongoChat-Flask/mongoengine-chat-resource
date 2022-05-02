@@ -1,6 +1,6 @@
 # 不能刪! 此行做為連接 Mongodb Atlas
 
-from mongo.mongo_setup import db
+from mongo import db
 import datetime
 
 assert isinstance(db, object)
