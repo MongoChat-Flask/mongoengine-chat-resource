@@ -1,7 +1,7 @@
 import mongoengine
 # 不能刪! 此行做為連接 Mongodb Atlas
 import flask
-from mongo.mongo_setup import db
+from mongo import db
 from user.methods.VerfiedEmail import establish_mail_object, check_url, send
 from user.models import Users
 
@@ -24,13 +24,13 @@ def to_json(self) -> dict:
     }
 
 
-def CreateUser() -> "flask.Response":
+def CreateUser(account: str, email: str, password: str) -> "flask.Response":
     """這裡要添加<輸入參數>，以新增 'users' collection 的資料(帳號註冊功能)"""
     try:
         user = Users(
-            Account="wc22014920",
-            Email="wc201920@gmail.com",
-            Password="42067423",
+            Account=account,
+            Email=email,
+            Password=password,
             Friends=[],
             ChatRooms=[],
             EmailVaildated=False
@@ -73,7 +73,7 @@ def CheckUser(token, random) -> "flask.Response":
         })
 
 
-def LoginUser():
+def LoginUser(account: str, password: str):
     """login = (redirect_to聊天頁面) ? (有該帳號存在且經過驗證) : (重新導引至登入頁面並依狀況顯示其相應行為)"""
     return ""
 
@@ -88,7 +88,7 @@ def EditUser():
     return ""
 
 
-def DeleteUser():
+def DeleteUser(account: str, password: str):
     """Delete = (切至登入頁面) ? (成功刪除帳號) : (失敗?，可能為Bug，need修復)"""
     return ""
 

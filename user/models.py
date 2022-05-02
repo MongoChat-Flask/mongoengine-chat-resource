@@ -1,7 +1,7 @@
 # Database module
 from mongoengine import *
 # 不能刪! 此行做為連接 mongodb atlas cluster
-from mongo.mongo_setup import db
+from mongo import db
 
 
 class Users(Document):
