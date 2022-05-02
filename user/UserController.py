@@ -24,13 +24,13 @@ def to_json(self) -> dict:
     }
 
 
-def CreateUser() -> "flask.Response":
+def CreateUser(account: str, email: str, password: str) -> "flask.Response":
     """這裡要添加<輸入參數>，以新增 'users' collection 的資料(帳號註冊功能)"""
     try:
         user = Users(
-            Account="wc22014920",
-            Email="wc201920@gmail.com",
-            Password="42067423",
+            Account=account,
+            Email=email,
+            Password=password,
             Friends=[],
             ChatRooms=[],
             EmailVaildated=False
