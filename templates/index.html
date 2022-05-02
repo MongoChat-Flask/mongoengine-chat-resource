@@ -39,30 +39,39 @@
   <body class="text-center">
 {% block content %}
 
-
   <main class="form-signin">
-    <form>
+    <form action="">
       <img class="mb-4" src="https://bootstrap5.hexschool.com/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
       <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
+{% if login == False %}
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-        <label for="floatingInput">Email address</label>
+        <input type="email" class="form-control" id="floatingName" placeholder="username">
+        <label for="floatingName">Email address</label>
+      </div>
+{% endif %}
+      <div class="form-floating">
+        <input type="email" class="form-control" id="floatingInput1" placeholder="name@example.com">
+        <label for="floatingInput1">Email address</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Password</label>
+        <input type="password" class="form-control" id="floatingPassword1" placeholder="Password">
+        <label for="floatingPassword1">Password</label>
       </div>
 
       <p></p>
-
-      <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-      <a href="{{url_for('UserRoutes.login')}}"></a>
+{% if login == True %}
+      <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('UserRoutes.login')}}" formmethod="post">Sign in</button>
 
       <p></p>
 
-      <button class="w-100 btn btn-lg btn-secondary" type="submit">Sign up</button>
-      <a href="{{url_for('UserRoutes.signup')}}"></a>
+      <button class="w-100 btn btn-lg btn-secondary" type="submit" formaction="{{url_for('UserRoutes.signup')}}" formmethod="get">Sign up</button>
+{% else %}
+      <button class="w-100 btn btn-lg btn-secondary" type="submit" formaction="{{url_for('UserRoutes.signup')}}" formmethod="post">Sign up</button>
+
+      <p></p>
+
+      <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('IndexRoutes.index')}}" formmethod="get">Sign in</button>
+{% endif %}
 
       <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
     </form>

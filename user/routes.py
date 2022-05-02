@@ -9,7 +9,7 @@ UserRoutes = Blueprint('UserRoutes', __name__)
 @UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == "GET":
-        return render_template('register.html')
+        return render_template('index.html', login=False)
     return CreateUser()
 
 
@@ -20,7 +20,7 @@ def Activate_account():
 
 
 # 登入
-@UserRoutes.route('/login', methods=['GET'])
+@UserRoutes.route('/login', methods=['GET', 'POST'])
 def login():
     return "VaildateUser()"
 
