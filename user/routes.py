@@ -1,6 +1,4 @@
-import itsdangerous
 from flask import Blueprint
-
 from user.UserController import *
 
 # 建立(註冊)路由的函式
