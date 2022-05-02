@@ -1,3 +1,4 @@
+import http
 import smtplib
 import uuid
 import email.message
@@ -20,13 +21,13 @@ def send(msgObj):
         server.close()  # 發送完成後關閉連線
         print("Send Complete!")
         return jsonify({
-            "HTTP": 200,
+            "HTTP": http.HTTPStatus.OK,
             "message": "成功送出"
 
         })
     except Exception:
         return jsonify({
-            "HTTP": 201,
+            "HTTP": http.HTTPStatus.INTERNAL_SERVER_ERROR,
             "message": "非預期錯誤!"
         })
 
