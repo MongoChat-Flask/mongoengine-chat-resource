@@ -1,7 +1,7 @@
 import mongoengine
 # 不能刪! 此行做為連接 Mongodb Atlas
 import flask
-from mongo.mongo_setup import db
+from mongo import db
 from user.methods.VerfiedEmail import establish_mail_object, check_url, send
 from user.models import Users
 
