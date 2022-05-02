@@ -56,6 +56,7 @@ def CreateUser():  # 這裡要添加<輸入參數>，以新增 'users' collectio
 
 def CheckUser(token, random):  # Activate = (重新導引至登入頁面並通知成功及接續步驟) ? (若為有效電子郵件) : (重新導引至登入頁面並通知失敗原因)
     if check_url(token, random):
+        # 將更動其創建好的帳號進行更新狀態以激活
         return jsonify({
             "State": True
         }), 207
