@@ -6,6 +6,6 @@ from message.MessageController import *
 MsgRoutes = Blueprint('MsgRoutes', __name__)
 
 
-@MsgRoutes.route('/create', methods=['GET'])
+@MsgRoutes.route('/send', methods=['GET'])
 def send():
-    return "CreateMsg()"
+    return "send_message()"
