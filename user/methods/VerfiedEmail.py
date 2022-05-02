@@ -5,7 +5,7 @@ import email.message
 from itsdangerous import SignatureExpired
 from user.methods.config import *
 from user.models import Users
-from mongo.mongo_setup import db
+from mongo import db
 import flask
 import logging
 
