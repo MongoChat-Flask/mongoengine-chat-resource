@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, render_template
 from user.UserController import *
 
 # 建立(註冊)路由的函式
@@ -6,8 +6,10 @@ UserRoutes = Blueprint('UserRoutes', __name__)
 
 
 # 註冊
-@UserRoutes.route('/signup', methods=['GET'])
+@UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if request.method == "GET":
+        return render_template('register.html')
     return CreateUser()
 
 
