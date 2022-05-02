@@ -1,16 +1,11 @@
-from config import vertification_context, gacc, gpwd, secret_key
-from itsdangerous import URLSafeTimedSerializer
+import mongoengine
 # 不能刪! 此行做為連接 Mongodb Atlas
 from flask import jsonify, request
 from mongo.mongo_setup import db
+from user.methods.VerfiedEmail import establish_mail_object, check_url, send
 from user.models import Users
-import email.message
-import mongoengine
-import smtplib
 
 assert isinstance(db, object)
-
-s = URLSafeTimedSerializer(secret_key=secret_key)
 
 
 # (Password)加密、解密之用途
@@ -28,7 +23,6 @@ def to_json(self):
 
 
 def CreateUser():  # 這裡要添加<輸入參數>，以新增 'users' collection 的資料(帳號註冊功能)
-
     try:
         user = Users(
             Account="wc22014920",
@@ -40,63 +34,39 @@ def CreateUser():  # 這裡要添加<輸入參數>，以新增 'users' collectio
         )
         user.save()
         if Users.objects(Account=user.Account):
-            return jsonify(to_json(user)), 200
+            msgObj = establish_mail_object(user.Email)
+            # 送出驗證郵件(Gmail)
+            return send(msgObj)
         else:
             return jsonify({
                 "Error_msg": "註冊失敗! Please try again!",
-                "HTTP": 333
-            }), 201
+                "HTTP": 204
+            }), 204
     except mongoengine.errors.NotUniqueError:  # 針對各種例外情形產生response(error)，以給予相應的處理
         return jsonify({
             "Error_msg": "你註冊的部分資訊已被使用!",
-            "HTTP": 222
-        }), 201
+            "HTTP": 205
+        }), 205
     except mongoengine.errors.ValidationError:
         return jsonify({
             "Error_msg": "請確認你輸入的資訊無誤!",
-            "HTTP": 111
-        }), 203
+            "HTTP": 206
+        }), 206
 
 
-def CheckUser():  # login = (redirect_to聊天頁面) ? (有該帳號存在且經過驗證) : (重新導引至登入頁面並依狀況顯示其相應行為)
+def CheckUser(token, random):  # Activate = (重新導引至登入頁面並通知成功及接續步驟) ? (若為有效電子郵件) : (重新導引至登入頁面並通知失敗原因)
+    if check_url(token, random):
+        return jsonify({
+            "State": True
+        }), 207
+    else:
+        return jsonify({
+            "State": False
+        }), 208
+
+
+def LoginUser():  # login = (redirect_to聊天頁面) ? (有該帳號存在且經過驗證) : (重新導引至登入頁面並依狀況顯示其相應行為)
     return ""
-
-
-def Send_for_Activate():  # vaildation = (redirect_to登入頁面) ? (點選其電子連結，通過驗證) : (超時，刪除過期註冊帳號)
-    if request.method == 'GET':
-        return '<form action="/user/sendtest" method="POST">' \
-               '<input name="email">' \
-               '<input type="submit"></form>'
-    email_not_verified = request.form['email']
-    token = s.dumps(email_not_verified, salt='MongoChat-Activate')
-
-    # return 'The email you entered is {}, and the token is {}'.format(request.form['email'], token)
-
-    # 建立訊息物件
-    msg = email.message.EmailMessage()
-    msg["Form"] = gacc
-    msg["To"] = "xz20201222@gmail.com"  # 這裏會被輸入參數取代
-    msg["Subject"] = "MongoChat - 郵件認證"
-    msg.add_alternative(vertification_context.format(token), subtype="html")
-    # 連線到SMTP Sevver
-    try:
-        # 可以從網路上找到主機名稱和連線埠
-        server = smtplib.SMTP_SSL("smtp.gmail.com", 465)  # 建立gmail連線
-        server.login(gacc, gpwd)
-        server.send_message(msg)
-        server.close()  # 發送完成後關閉連線
-        print("Send Complete!")
-        return jsonify({
-            "HTTP": 200,
-            "message": "成功送出"
-
-        })
-    except Exception as e:
-        print("Error message", e)
-        return jsonify({
-            "HTTP": 201,
-            "message": str(e)
-        })
 
 
 def LogoutUser():  # Logout = (redirect_to登入頁面)

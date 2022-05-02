@@ -12,3 +12,4 @@ mongoengine
 dnspython
 passlib
 pymongo
+requests

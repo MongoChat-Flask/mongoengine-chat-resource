@@ -37,15 +37,6 @@ def delete():
     return "DeleteUser()"
 
 
-@UserRoutes.route('/sendtest', methods=['GET', 'POST'])
-def vaildation():
-    return Send_for_Activate()
-
-
-@UserRoutes.route('/sendtest/confirm/<token>', methods=['GET'])
-def Activate_account(token):
-    try:
-        email_from_url = s.loads(token, salt='MongoChat-Activate', max_age=60)
-        return "你的帳戶已激活!"
-    except itsdangerous.exc.SignatureExpired:
-        return "該連結已過期，請重新註冊!"
+@UserRoutes.route('/vaild/confirm/', methods=['GET', 'POST'])
+def Activate_account():
+    return CheckUser(request.values.get('token'), request.values.get('random'))

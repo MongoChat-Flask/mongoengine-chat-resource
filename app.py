@@ -19,4 +19,4 @@ app.register_blueprint(RoomRoutes, url_prefix="/chat-r/")
 Bootstrap(app)
 
 if __name__ == '__main__':
-    app.run(debug=debug, port=port, host=host)
+    app.run(debug=debug)
