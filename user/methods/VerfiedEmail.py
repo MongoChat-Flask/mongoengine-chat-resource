@@ -27,7 +27,7 @@ def send(msgObj):
     except Exception:
         return jsonify({
             "HTTP": 201,
-            "message": "請確認你的輸入!"
+            "message": "非預期錯誤!"
         })
 
 
