@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from user.UserController import *
 
 # 建立(註冊)路由的函式

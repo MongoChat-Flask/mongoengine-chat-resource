@@ -57,6 +57,7 @@ def CreateUser() -> "flask.Response":
             "HTTP": http.HTTPStatus.BAD_REQUEST
         })
 
+
 def CheckUser(token, random) -> "flask.Response":
     """Activate = (重新導引至登入頁面並通知成功及接續步驟) ? (若為有效電子郵件) : (重新導引至登入頁面並通知失敗原因)"""
     if check_url(token, random):
