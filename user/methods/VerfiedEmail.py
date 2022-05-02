@@ -6,7 +6,8 @@ from itsdangerous import SignatureExpired
 from user.methods.config import *
 from user.models import Users
 from mongo.mongo_setup import db
-from flask import jsonify
+import flask
+import logging
 
 assert isinstance(db, object)
 
@@ -19,21 +20,21 @@ def send(msgObj):
         server.login(msgObj[1], msgObj[2])
         server.send_message(msgObj[0])
         server.close()  # 發送完成後關閉連線
-        print("Send Complete!")
-        return jsonify({
+        logging.info("Send Complete!")
+        return flask.jsonify({
             "HTTP": http.HTTPStatus.OK,
             "message": "成功送出"
-
         })
-    except Exception:
-        return jsonify({
+    except Exception as err:
+        logging.error("unexpected error", err)
+        return flask.jsonify({
             "HTTP": http.HTTPStatus.INTERNAL_SERVER_ERROR,
             "message": "非預期錯誤!"
         })
 
 
 def establish_mail_object(email_not_verified):
-    print(email_not_verified)
+    logging.info("user.methods.VerifiedEmail.establish_main_object:", email_not_verified)
     random_string = uuid.uuid4()
     token = s.dumps(email_not_verified, salt='MongoChat-Activate{}'.format(random_string))
     msg = email.message.EmailMessage()
@@ -48,8 +49,8 @@ def establish_mail_object(email_not_verified):
 def check_url(token, random_string):
     try:
         decrypt_mail = s.loads(token, salt='MongoChat-Activate{}'.format(random_string), max_age=60)
-        print(Users.objects(Email=decrypt_mail).count())
+        logging.info("user email count:", Users.objects(Email=decrypt_mail).count())
         return True if 1 == Users.objects(Email=decrypt_mail).count() else False
     except SignatureExpired:
-        print("該連結已過期，請重新註冊!")
+        logging.error("連結已過期，需重新註冊!")
         return False
