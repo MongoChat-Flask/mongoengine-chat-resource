@@ -9,14 +9,17 @@ UserRoutes = Blueprint('UserRoutes', __name__)
 @UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == "GET":
-        return render_template('index.html', login=False)
-    return CreateUser()
+        return render_template('index.html', login=False, success=False, activate=-1)
+    # request.method == "POST"
+    data = request.values.to_dict()
+    return CreateUser(data['account'], data['email'], data['password'])
 
 
 # 電子郵件認證
-@UserRoutes.route('/vaild/confirm/', methods=['GET', 'POST'])
+@UserRoutes.route('/vaild/confirm/', methods=['POST'])
 def Activate_account():
-    return CheckUser(request.values.get('token'), request.values.get('random'))
+    data = request.values.to_dict()
+    return CheckUser(data['token'], data['random'])
 
 
 # 登入

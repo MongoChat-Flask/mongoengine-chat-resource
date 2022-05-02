@@ -1,6 +1,8 @@
 import mongoengine
 # 不能刪! 此行做為連接 Mongodb Atlas
 import flask
+from flask import Response
+
 from mongo import db
 from user.methods.VerfiedEmail import establish_mail_object, check_url, send
 from user.models import Users
@@ -58,19 +60,23 @@ def CreateUser(account: str, email: str, password: str) -> "flask.Response":
         })
 
 
-def CheckUser(token, random) -> "flask.Response":
+def CheckUser(token, random) -> str | Response:
     """Activate = (重新導引至登入頁面並通知成功及接續步驟) ? (若為有效電子郵件) : (重新導引至登入頁面並通知失敗原因)"""
-    if check_url(token, random):
-        # 將更動其創建好的帳號進行更新狀態以激活
-        return flask.jsonify({
-            "State": True,
-            "HTTP": http.HTTPStatus.OK,
-        })
+    email = check_url(token, random)
+    print(email)
+    if not email == "":
+        if Users.objects(Email=email).update(upsert=True, EmailVaildated=True) == 1:
+            print(email)
+            # 將更動其創建好的帳號進行更新狀態以激活
+            return flask.render_template('index.html', login=True, success=False, activate=1)
+            # return flask.jsonify({
+            #     "State": True,
+            #     "HTTP": http.HTTPStatus.OK,
+            # })
+        else:
+            return flask.render_template('index.html', login=True, success=False, activate=0)
     else:
-        return flask.jsonify({
-            "State": False,
-            "HTTP": http.HTTPStatus.BAD_REQUEST
-        })
+        return flask.render_template('index.html', login=True, success=False, activate=0)
 
 
 def LoginUser(account: str, password: str):

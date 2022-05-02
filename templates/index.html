@@ -46,18 +46,18 @@
       <h1 class="h3 mb-3 fw-normal">Sign up</h1>
 
       <div class="form-floating">
-        <input type="text" class="form-control" id="floatingName" placeholder="username">
+        <input type="text" class="form-control" id="floatingName" placeholder="username" name="account">
         <label for="floatingName">Nickname</label>
       </div>
 {% else %}
       <h1 class="h3 mb-3 fw-normal">Sign in</h1>
 {% endif %}
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput1" placeholder="name@example.com">
+        <input type="email" class="form-control" id="floatingInput1" placeholder="name@example.com" name="email">
         <label for="floatingInput1">Email address</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword1" placeholder="Password">
+        <input type="password" class="form-control" id="floatingPassword1" placeholder="Password" name="password">
         <label for="floatingPassword1">Password</label>
       </div>
 
@@ -74,6 +74,18 @@
       <p></p>
 
       <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('IndexRoutes.index')}}" formmethod="get">Sign in</button>
+{% endif %}
+
+      <p></p>
+
+{% if success==True %}
+        <div class="alert alert-success" role="alert">Sign up success!<br>Please go to check your email to activate your account</div>
+{% endif %}
+{% if activate==1 %}
+        <div class="alert alert-success" role="alert">Activate!<br>Now is time to login!</div>
+{% endif %}
+{% if activate==0 %}
+        <div class="alert alert-danger" role="alert">Error!<br>Something get wrong!</div>
 {% endif %}
 
       <p class="mt-5 mb-3 text-muted" style="position: absolute; left: 50%;

@@ -2,6 +2,8 @@ import http
 import smtplib
 import uuid
 import email.message
+
+from flask import Response
 from itsdangerous import SignatureExpired
 from user.methods.config import *
 from user.models import Users
@@ -12,7 +14,7 @@ import logging
 assert isinstance(db, object)
 
 
-def send(msgObj) -> "flask.Response":
+def send(msgObj) -> str | Response:
     # 連線到 SMTP Server
     try:
         # 可以從網路上找到主機名稱和連線埠
@@ -21,10 +23,8 @@ def send(msgObj) -> "flask.Response":
         server.send_message(msgObj[0])
         server.close()  # 發送完成後關閉連線
         logging.info("user.methods.VerifiedEmail.send: Send Complete!")
-        return flask.jsonify({
-            "HTTP": http.HTTPStatus.OK,
-            "message": "成功送出"
-        })
+        return flask.render_template('index.html', login=True, success=True, activate=-1)
+
     except Exception as err:
         logging.critical("unexpected error:", err)
         return flask.jsonify({
@@ -46,14 +46,14 @@ def establish_mail_object(email_not_verified) -> tuple:
     return msg, gacc, gpwd
 
 
-def check_url(token, random_string) -> bool:
+def check_url(token, random_string) -> str:
     try:
-        decrypt_mail = s.loads(token, salt='MongoChat-Activate{}'.format(random_string), max_age=60)
+        decrypt_mail = s.loads(token, salt='MongoChat-Activate-{}'.format(random_string), max_age=60)
         logging.info("user email count:", Users.objects(Email=decrypt_mail).count())
-        return Users.objects(Email=decrypt_mail).count() == 1
+        return decrypt_mail if Users.objects(Email=decrypt_mail).count() == 1 else ""
     except SignatureExpired:
         logging.error("連結已過期，需重新註冊!")
-        return False
+        return ""
     except Exception as err:
         logging.critical("unexpected exception:", err)
-        return False
+        return ""
