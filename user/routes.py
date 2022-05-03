@@ -1,5 +1,6 @@
 from flask import Blueprint, request, render_template
 from user.UserController import *
+from user import LoginForm, RgisterForm
 
 # 建立(註冊)路由的函式
 UserRoutes = Blueprint('UserRoutes', __name__)
@@ -9,7 +10,7 @@ UserRoutes = Blueprint('UserRoutes', __name__)
 @UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == "GET":
-        return render_template('index.html', login=False)
+        return render_template('index.html', login=False, form=RgisterForm())
     # request.method == "POST"
     data = request.values.to_dict()
     return CreateUser(data['account'], data['email'], data['password'])
@@ -25,7 +26,7 @@ def Activate_account():
 # 登入
 @UserRoutes.route('/login', methods=['GET', 'POST'])
 def login():
-    return "VaildateUser()"
+    return "LoginUser()"
 
 
 # 登出

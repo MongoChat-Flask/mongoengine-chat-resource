@@ -7,6 +7,7 @@ from user.models import Users
 
 assert isinstance(db, object)
 
+
 def create_chat_room(room_name: str) -> "flask.Response":
     """create new chat room with room_name"""
     pass

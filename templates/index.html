@@ -38,45 +38,69 @@
 {% block body %}
   <body class="text-center">
 {% block content %}
-
+{% import "bootstrap/wtf.html" as wtf %}
   <main class="form-signin">
-    <form action="">
-      <img class="mb-4" src="{{url_for('static', filename='imgs/logo.png')}}" alt="" width="300" height="auto">
 {% if login == False %}
+    <form action="{{url_for('UserRoutes.signup')}}" method="post">
+        {{form.csrf_token}}
+
+      <a href="{{url_for('IndexRoutes.index')}}">
+          <img class="mb-4" src="{{url_for('static', filename='imgs/logo.png')}}" alt="" width="300" height="auto">
+      </a>
+
       <h1 class="h3 mb-3 fw-normal">Sign up</h1>
 
       <div class="form-floating">
-        <input type="text" class="form-control" id="floatingName" placeholder="username" name="account">
-        <label for="floatingName">Nickname</label>
+          {{form.account(class="form-control", placeholder="username")}}
+          {{form.account.label(class='form-label')}}
       </div>
-    {% else %}
+{% else %}
+    <form action="{{url_for('UserRoutes.login')}}" method="post">
+        {{form.csrf_token}}
+
+      <a href="{{url_for('IndexRoutes.index')}}">
+          <img class="mb-4" src="{{url_for('static', filename='imgs/logo.png')}}" alt="" width="300" height="auto">
+      </a>
+
       <h1 class="h3 mb-3 fw-normal">Sign in</h1>
 {% endif %}
+      <p></p>
+
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput1" placeholder="name@example.com" name="email">
-        <label for="floatingInput1">Email address</label>
-      </div>
-      <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword1" placeholder="Password" name="password">
-        <label for="floatingPassword1">Password</label>
+          {{form.email(class="form-control", placeholder="xxx@gmail.com")}}
+          {{form.email.label(class='form-label')}}
       </div>
 
       <p></p>
+
+      <div class="form-floating">
+          {{form.password(class="form-control", placeholder="Password")}}
+          {{form.password.label(class='form-label')}}
+      </div>
+
+      <p></p>
+
 {% if login == True %}
-      <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('UserRoutes.login')}}" formmethod="post">Sign in</button>
+          {{form.submit(class="w-100 btn btn-lg btn-primary")}}
+    </form>
 
       <p></p>
 
-      <button class="w-100 btn btn-lg btn-secondary" type="submit" formaction="{{url_for('UserRoutes.signup')}}" formmethod="get">Sign up</button>
+    <form>
+        <button class="w-100 btn btn-lg btn-secondary" type="submit" formaction="{{url_for('UserRoutes.signup')}}" formmethod="get">Sign up</button>
+    </form>
     {% else %}
-      <button class="w-100 btn btn-lg btn-secondary" type="submit" formaction="{{url_for('UserRoutes.signup')}}" formmethod="post">Sign up</button>
+          {{form.submit(class="w-100 btn btn-lg btn-secondary")}}
+    </form>
 
       <p></p>
-
-      <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('IndexRoutes.index')}}" formmethod="get">Sign in</button>
+    <form>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('IndexRoutes.index')}}" formmethod="get">Sign in</button>
+    </form>
     {% endif %}
 
       <p></p>
+
 {% if getinfo %}
     {% if getinfo==True %}
         <div class="alert alert-success" role="alert"><p>{{message}}</p></div>
@@ -89,7 +113,7 @@
 
       <p class="mt-5 mb-3 text-muted" style="position: absolute; left: 50%;
       transform: translate(-50%, 0); bottom: 10px;">&copy; 2022</p>
-    </form>
+
   </main>
 {% endblock content %}
   </body>
