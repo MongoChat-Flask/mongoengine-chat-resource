@@ -2,7 +2,7 @@ import mongoengine
 # 不能刪! 此行做為連接 Mongodb Atlas
 import flask
 from flask import Response
-
+from user.methods.config import *
 from mongo import db
 from user.methods.VerfiedEmail import establish_mail_object, check_url, send
 from user.models import Users
@@ -15,6 +15,7 @@ assert isinstance(db, object)
 # (Password)加密、解密之用途
 # link:https://passlib.readthedocs.io/en/stable/narr/hash-tutorial.html#customizing-the-configuration
 # from passlib.hash import pbkdf2_sha256
+
 
 def to_json(self) -> dict:
     return {
@@ -68,15 +69,15 @@ def CheckUser(token, random) -> str | Response:
         if Users.objects(Email=email).update(upsert=True, EmailVaildated=True) == 1:
             print(email)
             # 將更動其創建好的帳號進行更新狀態以激活
-            return flask.render_template('index.html', login=True, success=False, activate=1)
+            return flask.render_template('index.html', login=True, getinfo=True, message=Message["Activate-success"])
             # return flask.jsonify({
             #     "State": True,
             #     "HTTP": http.HTTPStatus.OK,
             # })
         else:
-            return flask.render_template('index.html', login=True, success=False, activate=0)
+            return flask.render_template('index.html', login=True, getinfo=True, message=Message["Error"])
     else:
-        return flask.render_template('index.html', login=True, success=False, activate=0)
+        return flask.render_template('index.html', login=True, getinfo=True, message=Message["Error"])
 
 
 def LoginUser(account: str, password: str):

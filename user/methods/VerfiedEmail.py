@@ -23,14 +23,11 @@ def send(msgObj) -> str | Response:
         server.send_message(msgObj[0])
         server.close()  # 發送完成後關閉連線
         logging.info("user.methods.VerifiedEmail.send: Send Complete!")
-        return flask.render_template('index.html', login=True, success=True, activate=-1)
+        return flask.render_template('index.html', login=True, getinfo=True, message=Message["Sign-up-success"])
 
     except Exception as err:
         logging.critical("unexpected error:", err)
-        return flask.jsonify({
-            "HTTP": http.HTTPStatus.INTERNAL_SERVER_ERROR,
-            "message": "非預期錯誤!"
-        })
+        return flask.render_template('index.html', login=False, getinfo=True, message=Message["Error"])
 
 
 def establish_mail_object(email_not_verified) -> tuple:

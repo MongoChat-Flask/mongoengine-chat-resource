@@ -49,7 +49,7 @@
         <input type="text" class="form-control" id="floatingName" placeholder="username" name="account">
         <label for="floatingName">Nickname</label>
       </div>
-{% else %}
+    {% else %}
       <h1 class="h3 mb-3 fw-normal">Sign in</h1>
 {% endif %}
       <div class="form-floating">
@@ -68,25 +68,24 @@
       <p></p>
 
       <button class="w-100 btn btn-lg btn-secondary" type="submit" formaction="{{url_for('UserRoutes.signup')}}" formmethod="get">Sign up</button>
-{% else %}
+    {% else %}
       <button class="w-100 btn btn-lg btn-secondary" type="submit" formaction="{{url_for('UserRoutes.signup')}}" formmethod="post">Sign up</button>
 
       <p></p>
 
       <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('IndexRoutes.index')}}" formmethod="get">Sign in</button>
+    {% endif %}
+
+      <p></p>
+{% if getinfo %}
+    {% if getinfo==True %}
+        <div class="alert alert-success" role="alert"><p>{{message}}</p></div>
+    {% else %}
+        <div class="alert alert-danger" role="alert"><p>{{message}}</p></div>
+    {% endif %}
 {% endif %}
 
       <p></p>
-
-{% if success==True %}
-        <div class="alert alert-success" role="alert">Sign up success!<br>Please go to check your email to activate your account</div>
-{% endif %}
-{% if activate==1 %}
-        <div class="alert alert-success" role="alert">Activate!<br>Now is time to login!</div>
-{% endif %}
-{% if activate==0 %}
-        <div class="alert alert-danger" role="alert">Error!<br>Something get wrong!</div>
-{% endif %}
 
       <p class="mt-5 mb-3 text-muted" style="position: absolute; left: 50%;
       transform: translate(-50%, 0); bottom: 10px;">&copy; 2022</p>

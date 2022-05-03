@@ -9,7 +9,7 @@ UserRoutes = Blueprint('UserRoutes', __name__)
 @UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == "GET":
-        return render_template('index.html', login=False, success=False, activate=-1)
+        return render_template('index.html', login=False)
     # request.method == "POST"
     data = request.values.to_dict()
     return CreateUser(data['account'], data['email'], data['password'])
