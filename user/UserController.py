@@ -28,6 +28,11 @@ def to_json(self) -> dict:
 
 def CreateUser(account: str, email: str, password: str) -> "flask.Response":
     """這裡要添加<輸入參數>，以新增 'users' collection 的資料(帳號註冊功能)"""
+    session["signal"] = {
+        "login": True,
+        "getinfo": True,
+        "message": ""
+    }
     try:
         user = Users(
             Account=account,
@@ -43,21 +48,15 @@ def CreateUser(account: str, email: str, password: str) -> "flask.Response":
             # 送出驗證郵件(Gmail)
             return send(msgObj)
         else:
-            return flask.jsonify({
-                "Error_msg": "註冊失敗! Please try again!",
-                "HTTP": http.HTTPStatus.BAD_REQUEST
-            })
+            session["signal"]["message"] = Message["Error_msg1"]
+            return redirect(url_for('IndexRoutes.sec'))
     # 針對各種例外情形產生response(error)，以給予相應的處理
     except mongoengine.errors.NotUniqueError:
-        return flask.jsonify({
-            "Error_msg": "你註冊的部分資訊已被使用!",
-            "HTTP": http.HTTPStatus.BAD_REQUEST
-        })
+        session["signal"]["message"] = Message["Error_msg2"]
+        return redirect(url_for('IndexRoutes.sec'))
     except mongoengine.errors.ValidationError:
-        return flask.jsonify({
-            "Error_msg": "請確認你輸入的資訊無誤!",
-            "HTTP": http.HTTPStatus.BAD_REQUEST
-        })
+        session["signal"]["message"] = Message["Error_msg3"]
+        return redirect(url_for('IndexRoutes.sec'))
 
 
 def CheckUser(token, random) -> str | Response:
@@ -74,13 +73,13 @@ def CheckUser(token, random) -> str | Response:
             print(email)
             # 將更動其創建好的帳號進行更新狀態以激活
             session["signal"]["message"] = Message["Activate-success"]
-            return redirect(url_for('IndexRoutes.index'))
+            return redirect(url_for('IndexRoutes.sec'))
         else:
-            session["signal"]["message"] = Message["Error"]
-            return redirect(url_for('IndexRoutes.index'))
+            session["signal"]["message"] = Message["Error_msg0"]
+            return redirect(url_for('IndexRoutes.sec'))
     else:
-        session["signal"]["message"] = Message["Error"]
-        return redirect(url_for('IndexRoutes.index'))
+        session["signal"]["message"] = Message["Error_msg0"]
+        return redirect(url_for('IndexRoutes.sec'))
 
 
 def LoginUser(email: str, password: str) -> str | Response:

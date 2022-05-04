@@ -12,7 +12,6 @@ def signup():
     form = RgisterForm()
     if not form.validate_on_submit() or request.method == "GET":
         return render_template('index.html', login=False, form=form)
-    # request.method == "POST"
     data = request.values.to_dict()
     print(data)
     return CreateUser(data['account'], data['email'], data['password'])
@@ -33,9 +32,9 @@ def login():
         session["signal"] = {
             "login": True,
             "getinfo": True,
-            "message": Message["ErrorInput"]
+            "message": Message["Error_msg3"]
         }
-        return redirect(url_for('IndexRoutes.index'))
+        return redirect(url_for('IndexRoutes.sec'))
     else:
         data = request.values.to_dict()
         print(data)

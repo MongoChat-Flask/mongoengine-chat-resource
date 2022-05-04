@@ -27,7 +27,7 @@ def send(msgObj) -> str | Response:
             "getinfo": True,
             "message": Message["Sign-up-success"]
         }
-        return redirect(url_for('IndexRoutes.index'))
+        return redirect(url_for('IndexRoutes.sec'))
 
     except Exception as err:
         logging.critical("unexpected error:", err)

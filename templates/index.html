@@ -44,7 +44,7 @@
     <form action="{{url_for('UserRoutes.signup')}}" method="post">
         {{form.csrf_token}}
 
-      <a href="{{url_for('IndexRoutes.index')}}">
+      <a href="{{url_for('IndexRoutes.start')}}">
           <img class="mb-4" src="{{url_for('static', filename='imgs/logo.png')}}" alt="" width="300" height="auto">
       </a>
 
@@ -58,7 +58,7 @@
     <form action="{{url_for('UserRoutes.login')}}" method="post">
         {{form.csrf_token}}
 
-      <a href="{{url_for('IndexRoutes.index')}}">
+      <a href="{{url_for('IndexRoutes.start')}}">
           <img class="mb-4" src="{{url_for('static', filename='imgs/logo.png')}}" alt="" width="300" height="auto">
       </a>
 
@@ -104,7 +104,7 @@
 
       <p></p>
     <form>
-        <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('IndexRoutes.index')}}" formmethod="get">Sign in</button>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('IndexRoutes.start')}}" formmethod="get">Sign in</button>
     </form>
     {% endif %}
 

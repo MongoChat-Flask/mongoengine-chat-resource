@@ -20,6 +20,8 @@ vertification_context = "<h4>" \
 Message = {
     "Sign-up-success": "Success! 檢查電子郵件以激活帳戶",
     "Activate-success": "Success! 可以登入了!",
-    "Error": "Error! 好像出現甚麼錯誤!",
-    "ErrorInput": "Error! 輸入好像出現甚麼錯誤!",
+    "Error_msg0": "Error! 好像出現甚麼錯誤!",
+    "Error_msg1": "Error! 請重來一次!",
+    "Error_msg2": "Error! 你註冊的部分資訊已被使用!",
+    "Error_msg3": "Error! 請確認你輸入的資訊無誤!",
 }
