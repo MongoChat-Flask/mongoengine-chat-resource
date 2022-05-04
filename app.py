@@ -1,6 +1,5 @@
 # Flask-App config
 import os
-
 from flask import Flask
 from flask_bootstrap import Bootstrap
 
@@ -12,10 +11,9 @@ from message.routes import MsgRoutes
 from user.routes import UserRoutes
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'MONGO-CHAT-SECRET-KEY'
-# SECRET KEY
+app.config.from_object(Config)
 
-# 註冊新擴充路由
+# 註冊新的擴充路由
 app.register_blueprint(IndexRoutes, url_prefix="/")
 app.register_blueprint(UserRoutes, url_prefix="/user/")
 app.register_blueprint(MsgRoutes, url_prefix="/msg/")

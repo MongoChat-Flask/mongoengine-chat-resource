@@ -9,10 +9,12 @@ UserRoutes = Blueprint('UserRoutes', __name__)
 # 註冊
 @UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if request.method == "GET":
-        return render_template('index.html', login=False, form=RgisterForm())
+    form = RgisterForm()
+    if not form.validate_on_submit() or request.method == "GET":
+        return render_template('index.html', login=False, form=form)
     # request.method == "POST"
     data = request.values.to_dict()
+    print(data)
     return CreateUser(data['account'], data['email'], data['password'])
 
 
@@ -26,6 +28,8 @@ def Activate_account():
 # 登入
 @UserRoutes.route('/login', methods=['GET', 'POST'])
 def login():
+    data = request.values.to_dict()
+    print(data)
     return "LoginUser()"
 
 

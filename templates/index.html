@@ -80,6 +80,20 @@
 
       <p></p>
 
+{% if login == False %}
+      <div class="form-floating">
+          {{form.confirm(class="form-control", placeholder="Repeat password")}}
+          {{form.confirm.label(class='form-label')}}
+      </div>
+
+      <p></p>
+{% endif %}
+<!--      <div class="form-floating">-->
+<!--          {{form.recaptcha(class="form-control")}}-->
+<!--          {{form.recaptcha.label(class='form-label')}}-->
+<!--      </div>-->
+
+<!--      <p></p>-->
 {% if login == True %}
           {{form.submit(class="w-100 btn btn-lg btn-primary")}}
     </form>
