@@ -14,14 +14,10 @@ def index():
         report = session["signal"]
         if type(report) is not dict:
             session.clear()
-            print(request.path)
             return redirect(url_for('start'))
-        print(request.path)
         if 'index' in request.path:
             session.clear()
             return render_template('index.html', login=report['login'], form=LoginForm(), getinfo=report['getinfo'], message=report['message'])
         else:
-            # session.clear()
             return render_template('index.html', login=True, form=LoginForm())
-    print(request.path)
     return render_template('index.html', login=True, form=LoginForm())

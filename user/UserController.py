@@ -84,8 +84,9 @@ def CheckUser(token, random) -> str | Response:
 
 def LoginUser(email: str, password: str) -> str | Response:
     """login = (redirect_to聊天頁面) ? (有該帳號存在且經過驗證) : (重新導引至登入頁面並依狀況顯示其相應行為)"""
-    result=Users.objects(Email=email).first()
-    print(result)
+    result = True if (Users.objects(Email=email).count() == 1) else False
+    if Users.objects(Email=email).update(upsert=True, Online=True) == 1:
+        return ""
     return ""
 
 

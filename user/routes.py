@@ -28,18 +28,18 @@ def Activate_account():
 @UserRoutes.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    if not form.validate_on_submit() and request.method == "GET":
+    print(form.validate_on_submit())
+    if form.validate_on_submit() and request.method == "POST":
+        data = request.values.to_dict()
+        print(data)
+        return LoginUser(email=data['email'], password=data['password'])
+    else:
         session["signal"] = {
             "login": True,
             "getinfo": True,
             "message": Message["Error_msg3"]
         }
         return redirect(url_for('IndexRoutes.sec'))
-    else:
-        data = request.values.to_dict()
-        print(data)
-        return "LoginUser()"
-
 
 
 # 登出
