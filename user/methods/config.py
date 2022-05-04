@@ -18,7 +18,8 @@ vertification_context = "<h4>" \
                         "</h4>"
 # action = 'url' ->需要改為(部署階段)的鏈接
 Message = {
-    "Sign-up-success": "檢查電子郵件以激活帳戶",
-    "Activate-success": "已激活! 可以登入了!",
-    "Error": "Error!<br>好像出現甚麼錯誤!",
+    "Sign-up-success": "Success! 檢查電子郵件以激活帳戶",
+    "Activate-success": "Success! 可以登入了!",
+    "Error": "Error! 好像出現甚麼錯誤!",
+    "ErrorInput": "Error! 輸入好像出現甚麼錯誤!",
 }

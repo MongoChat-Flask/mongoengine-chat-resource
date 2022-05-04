@@ -1,12 +1,11 @@
 import mongoengine
 # 不能刪! 此行做為連接 Mongodb Atlas
 import flask
-from flask import Response
+from flask import Response, redirect, url_for, session
 from user.methods.config import *
 from mongo import db
 from user.methods.VerfiedEmail import establish_mail_object, check_url, send
 from user.models import Users
-from user import LoginForm
 import http
 
 assert isinstance(db, object)
@@ -63,29 +62,31 @@ def CreateUser(account: str, email: str, password: str) -> "flask.Response":
 
 def CheckUser(token, random) -> str | Response:
     """Activate = (重新導引至登入頁面並通知成功及接續步驟) ? (若為有效電子郵件) : (重新導引至登入頁面並通知失敗原因)"""
+    session["signal"] = {
+        "login": True,
+        "getinfo": True,
+        "message": ""
+    }
     email = check_url(token, random)
     print(email)
     if not email == "":
         if Users.objects(Email=email).update(upsert=True, EmailVaildated=True) == 1:
             print(email)
             # 將更動其創建好的帳號進行更新狀態以激活
-            return flask.render_template('index.html',
-                                         login=True, form=LoginForm(), getinfo=True, message=Message["Activate-success"])
-            # return flask.jsonify({
-            #     "State": True,
-            #     "HTTP": http.HTTPStatus.OK,
-            # })
+            session["signal"]["message"] = Message["Activate-success"]
+            return redirect(url_for('IndexRoutes.index'))
         else:
-            return flask.render_template('index.html',
-                                         login=True, form=LoginForm(), getinfo=True, message=Message["Error"])
+            session["signal"]["message"] = Message["Error"]
+            return redirect(url_for('IndexRoutes.index'))
     else:
-        return flask.render_template('index.html',
-                                     login=True, form=LoginForm(), getinfo=True, message=Message["Error"])
+        session["signal"]["message"] = Message["Error"]
+        return redirect(url_for('IndexRoutes.index'))
 
 
 def LoginUser(email: str, password: str) -> str | Response:
     """login = (redirect_to聊天頁面) ? (有該帳號存在且經過驗證) : (重新導引至登入頁面並依狀況顯示其相應行為)"""
-    Users.objects(Email=email).first()
+    result=Users.objects(Email=email).first()
+    print(result)
     return ""
 
 

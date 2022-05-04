@@ -3,13 +3,11 @@ import smtplib
 import uuid
 import email.message
 
-from flask import Response
+from flask import Response, redirect, url_for, session
 from itsdangerous import SignatureExpired
 from user.methods.config import *
 from user.models import Users
-from user import LoginForm, RgisterForm
 from mongo import db
-import flask
 import logging
 
 assert isinstance(db, object)
@@ -24,13 +22,16 @@ def send(msgObj) -> str | Response:
         server.send_message(msgObj[0])
         server.close()  # 發送完成後關閉連線
         logging.info("user.methods.VerifiedEmail.send: Send Complete!")
-        return flask.render_template('index.html',
-                                     login=True, form=LoginForm(), getinfo=True, message=Message["Sign-up-success"])
+        session["signal"] = {
+            "login": True,
+            "getinfo": True,
+            "message": Message["Sign-up-success"]
+        }
+        return redirect(url_for('IndexRoutes.index'))
 
     except Exception as err:
         logging.critical("unexpected error:", err)
-        return flask.render_template('index.html',
-                                     login=False, form=RgisterForm(), getinfo=True, message=Message["Error"])
+        return redirect(url_for('UserRoutes.signup'))
 
 
 def establish_mail_object(email_not_verified) -> tuple:
