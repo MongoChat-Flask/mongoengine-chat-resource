@@ -12,9 +12,6 @@ def index():
         print(f"session:{session['signal']}")
         report = session['signal']
         session.clear()
-        return render_template('index.html',
-                               login=True, form=LoginForm(),
-                               getinfo=report['getinfo'], message=report['message'])
-    return render_template('index.html',
-                           login=True, form=LoginForm(),
-                           getinfo=False)
+        return render_template('index.html', login=True, form=LoginForm(), getinfo=report['getinfo'],
+                               message=report['message'])
+    return render_template('index.html', login=True, form=LoginForm(), getinfo=False)
