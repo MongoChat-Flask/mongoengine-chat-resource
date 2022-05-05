@@ -2,7 +2,6 @@
 import os
 from flask import Flask, session
 from flask_bootstrap import Bootstrap
-
 from chatroom.routes import RoomRoutes
 from config import *
 # Routes modules
@@ -20,5 +19,7 @@ app.register_blueprint(MsgRoutes, url_prefix="/msg/")
 app.register_blueprint(RoomRoutes, url_prefix="/chat-r/")
 # 啟動Bootstrap
 Bootstrap(app)
+# login_manager
+
 if __name__ == '__main__':
     app.run(debug=debug)

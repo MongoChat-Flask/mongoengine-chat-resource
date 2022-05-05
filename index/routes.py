@@ -15,7 +15,7 @@ def index():
         if type(report) is not dict:
             session.clear()
             return redirect(url_for('start'))
-        if 'index' in request.path:
+        if 'index' in request.path:  # endpoint='sec'
             session.clear()
             return render_template('index.html', login=report['login'], form=LoginForm(), getinfo=report['getinfo'], message=report['message'])
         else:

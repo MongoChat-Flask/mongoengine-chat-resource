@@ -1,3 +1,4 @@
+from flask_login import UserMixin
 # Database module
 from mongoengine import *
 # 不能刪! 此行做為連接 mongodb atlas cluster
@@ -12,3 +13,8 @@ class Users(Document):
     Friends = ListField(ReferenceField('self', reverse_delete_rule=CASCADE))
     ChatRooms = ListField()
     EmailVaildated = BooleanField(default=False)
+
+
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return Users.objects(pk=user_id).first()

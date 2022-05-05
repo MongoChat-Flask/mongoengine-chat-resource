@@ -2,7 +2,9 @@
 import os.path
 
 from mongo import DB_URI
+from flask_login import LoginManager
 
+login_manager = LoginManager()
 debug = True
 
 

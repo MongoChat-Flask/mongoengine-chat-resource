@@ -12,6 +12,7 @@ Flask-Bootstrapper
 Flask-AppBuilder  
 flask-mongoengine  
 flask-security-too  
+flask-login
 mongoengine  
 dnspython  
 passlib  

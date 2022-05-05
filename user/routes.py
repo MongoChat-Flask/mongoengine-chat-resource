@@ -10,11 +10,21 @@ UserRoutes = Blueprint('UserRoutes', __name__)
 @UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RgisterForm()
-    if not form.validate_on_submit() or request.method == "GET":
-        return render_template('index.html', login=False, form=form)
-    data = request.values.to_dict()
-    print(data)
-    return CreateUser(data['account'], data['email'], data['password'])
+    if form.validate_on_submit():
+        data = request.values.to_dict()
+        print(data)
+        return CreateUser(data['account'], data['email'], data['password'])
+    else:
+        if request.method == "GET":
+            return render_template('index.html', login=False, form=form)
+        else:
+            session["signal"] = {
+                "login": True,
+                "getinfo": True,
+                "message": ""
+            }
+            session["signal"]["message"] = Message["Error_msg3"]
+            return redirect(url_for('IndexRoutes.sec'))
 
 
 # 電子郵件認證
@@ -29,17 +39,21 @@ def Activate_account():
 def login():
     form = LoginForm()
     print(form.validate_on_submit())
-    if form.validate_on_submit() and request.method == "POST":
+    if form.validate_on_submit():
         data = request.values.to_dict()
         print(data)
         return LoginUser(email=data['email'], password=data['password'])
     else:
-        session["signal"] = {
-            "login": True,
-            "getinfo": True,
-            "message": Message["Error_msg3"]
-        }
-        return redirect(url_for('IndexRoutes.sec'))
+        if request.method == "GET":
+            return render_template('index.html', login=True, form=form)
+        else:
+            session["signal"] = {
+                "login": True,
+                "getinfo": True,
+                "message": ""
+            }
+            session["signal"]["message"] = Message["Error_msg3"]
+            return redirect(url_for('IndexRoutes.sec'))
 
 
 # 登出
