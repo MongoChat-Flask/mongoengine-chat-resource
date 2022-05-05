@@ -3,7 +3,7 @@ import smtplib
 import uuid
 import email.message
 
-from flask import Response, redirect, url_for, session
+from flask import Response, redirect, url_for, session, flash
 from itsdangerous import SignatureExpired
 from user.methods.config import *
 from user.models import Users
@@ -27,6 +27,7 @@ def send(msgObj) -> str | Response:
             "getinfo": True,
             "message": Message["Sign-up-success"]
         }
+        flash('Congrats', 'registration success', category='success')
         return redirect(url_for('IndexRoutes.sec'))
 
     except Exception as err:

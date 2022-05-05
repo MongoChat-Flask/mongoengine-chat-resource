@@ -1,19 +1,40 @@
 from flask import Blueprint, request, render_template
 from user.UserController import *
 from user import LoginForm, RgisterForm
+import bcrypt
 
 # 建立(註冊)路由的函式
-UserRoutes = Blueprint('UserRoutes', __name__)
+UserRoutes = Blueprint('UserRoutes', __name__, template_folder="templates", static_folder="static")
+
+print(UserRoutes.root_path)
+
+# 按间距中的绿色按钮以运行脚本。
+@UserRoutes.route('', methods=['GET'], endpoint='start')
+@UserRoutes.route('/index', methods=['GET'], endpoint='sec')
+def index():
+    if "signal" in session:
+        report = session["signal"]
+        if type(report) is not dict:
+            session.clear()
+            return redirect(url_for('start'))
+        if 'index' in request.path:  # endpoint='sec'
+            session.clear()
+            return render_template('index.html', login=report['login'], form=LoginForm(), getinfo=report['getinfo'], message=report['message'])
+        else:
+            return render_template('index.html', login=True, form=LoginForm())
+    return render_template('index.html', login=True, form=LoginForm())
 
 
 # 註冊
 @UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RgisterForm()
+    print(form.password.data)
     if form.validate_on_submit():
-        data = request.values.to_dict()
-        print(data)
-        return CreateUser(data['account'], data['email'], data['password'])
+        pwd = form.password.data
+        print(pwd.encode('utf-8'))
+        password = bcrypt.hashpw(pwd.encode('utf-8'), bcrypt.gensalt(rounds=10))
+        return CreateUser(account=form.account.data, email=form.email.data, password=password)
     else:
         if request.method == "GET":
             return render_template('index.html', login=False, form=form)
@@ -40,12 +61,10 @@ def login():
     form = LoginForm()
     print(form.validate_on_submit())
     if form.validate_on_submit():
-        data = request.values.to_dict()
-        print(data)
-        return LoginUser(email=data['email'], password=data['password'])
+        return LoginUser(email=form.email.data, password=form.password.data)
     else:
         if request.method == "GET":
-            return render_template('index.html', login=True, form=form)
+            return redirect(url_for('IndexRoutes.start'))
         else:
             session["signal"] = {
                 "login": True,

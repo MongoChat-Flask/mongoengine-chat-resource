@@ -26,7 +26,7 @@ def to_json(self) -> dict:
     }
 
 
-def CreateUser(account: str, email: str, password: str) -> "flask.Response":
+def CreateUser(account: str, email: str, password: bytes) -> "flask.Response":
     """這裡要添加<輸入參數>，以新增 'users' collection 的資料(帳號註冊功能)"""
     session["signal"] = {
         "login": True,
@@ -84,7 +84,11 @@ def CheckUser(token, random) -> str | Response:
 
 def LoginUser(email: str, password: str) -> str | Response:
     """login = (redirect_to聊天頁面) ? (有該帳號存在且經過驗證) : (重新導引至登入頁面並依狀況顯示其相應行為)"""
-    result = True if (Users.objects(Email=email).count() == 1) else False
+    try:
+        check_point2 = Users.objects(Email=email).only("Password")
+        print(check_point2.Password)
+    except Exception:
+        return ""
     if Users.objects(Email=email).update(upsert=True, Online=True) == 1:
         return ""
     return ""

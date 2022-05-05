@@ -9,10 +9,11 @@ class Users(Document):
     """資料model命名方式: Users -> users [In mongodb atlas]"""
     Account = StringField(unique=True, required=True, min_length=9, max_length=20)
     Email = EmailField(unique=True, required=True)
-    Password = StringField(required=True)
+    Password = BinaryField(required=True)
     Friends = ListField(ReferenceField('self', reverse_delete_rule=CASCADE))
     ChatRooms = ListField()
     EmailVaildated = BooleanField(default=False)
+    Online = BooleanField(default=False)
 
 
 # @login_manager.user_loader
