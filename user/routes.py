@@ -8,6 +8,7 @@ UserRoutes = Blueprint('UserRoutes', __name__, template_folder="templates", stat
 
 print(UserRoutes.root_path)
 
+
 # 按间距中的绿色按钮以运行脚本。
 @UserRoutes.route('', methods=['GET'], endpoint='start')
 @UserRoutes.route('/index', methods=['GET'], endpoint='sec')
@@ -19,7 +20,8 @@ def index():
             return redirect(url_for('start'))
         if 'index' in request.path:  # endpoint='sec'
             session.clear()
-            return render_template('index.html', login=report['login'], form=LoginForm(), getinfo=report['getinfo'], message=report['message'])
+            return render_template('index.html', login=report['login'], form=LoginForm(), getinfo=report['getinfo'],
+                                   message=report['message'])
         else:
             return render_template('index.html', login=True, form=LoginForm())
     return render_template('index.html', login=True, form=LoginForm())
