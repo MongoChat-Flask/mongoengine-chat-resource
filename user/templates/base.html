@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% if var1=='Flask title' %}
-    <title>{{ var1 }}</title>
-    {% else %}
-    <title>HOME</title>
-    {% endif %}
+    {% block title %}{% endblock %}
 </head>
 <body>
 
