@@ -13,6 +13,7 @@ Flask-AppBuilder
 flask-mongoengine  
 flask-security-too  
 flask-login
+flask_bcrypt
 mongoengine  
 dnspython  
 passlib  
