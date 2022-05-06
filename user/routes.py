@@ -1,7 +1,8 @@
 from flask import Blueprint, request, render_template
 from user.UserController import *
 from user import LoginForm, RgisterForm
-import bcrypt
+# import bcrypt
+
 
 # 建立(註冊)路由的函式
 UserRoutes = Blueprint('UserRoutes', __name__, template_folder="templates", static_folder="static")
@@ -20,7 +21,8 @@ def index():
             return redirect(url_for('start'))
         if 'index' in request.path:  # endpoint='sec'
             session.clear()
-            return render_template('index.html', login=report['login'], form=LoginForm(), getinfo=report['getinfo'],
+            form = LoginForm() if report['login'] else RgisterForm()
+            return render_template('index.html', login=report['login'], form=form, getinfo=report['getinfo'],
                                    message=report['message'])
         else:
             return render_template('index.html', login=True, form=LoginForm())
@@ -31,23 +33,14 @@ def index():
 @UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RgisterForm()
-    print(form.password.data)
+    print(form.validate_on_submit())
     if form.validate_on_submit():
-        pwd = form.password.data
-        print(pwd.encode('utf-8'))
-        password = bcrypt.hashpw(pwd.encode('utf-8'), bcrypt.gensalt(rounds=10))
-        return CreateUser(account=form.account.data, email=form.email.data, password=password)
+        from app import bcrypt
+        pw_hash = bcrypt.generate_password_hash(form.Password.data)
+        return CreateUser(account=form.Account.data, email=form.Email.data,
+                          password=pw_hash)
     else:
-        if request.method == "GET":
-            return render_template('index.html', login=False, form=form)
-        else:
-            session["signal"] = {
-                "login": True,
-                "getinfo": True,
-                "message": ""
-            }
-            session["signal"]["message"] = Message["Error_msg3"]
-            return redirect(url_for('IndexRoutes.sec'))
+        return render_template('index.html', login=False, form=form)
 
 
 # 電子郵件認證
@@ -61,20 +54,11 @@ def Activate_account():
 @UserRoutes.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    print(form.validate_on_submit())
     if form.validate_on_submit():
-        return LoginUser(email=form.email.data, password=form.password.data)
+        # bcrypt.check_password_hash(pw_hash, 'hunter2')  # returns True
+        return LoginUser(email=form.Email.data, password=form.Password.data)
     else:
-        if request.method == "GET":
-            return redirect(url_for('IndexRoutes.start'))
-        else:
-            session["signal"] = {
-                "login": True,
-                "getinfo": True,
-                "message": ""
-            }
-            session["signal"]["message"] = Message["Error_msg3"]
-            return redirect(url_for('IndexRoutes.sec'))
+        return render_template('index.html', login=True, form=form)
 
 
 # 登出

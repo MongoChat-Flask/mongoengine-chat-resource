@@ -52,10 +52,16 @@
 
       <h1 class="h3 mb-3 fw-normal">Sign up</h1>
 
-      <div class="form-floating">
-          {{form.account(class="form-control", placeholder="username")}}
-          {{form.account.label(class='form-label')}}
+      <div class="form-floating form-group">
+          {{form.Account(class="form-control", placeholder="username")}}
+          {{form.Account.label(class='form-label')}}
+
       </div>
+        {% if form.Account.errors %}
+            {% for error in form.Account.errors %}
+              <div class="alert alert-warning" role="alert">{{error}}</div>
+            {% endfor %}
+          {% endif %}
 {% else %}
     <form action="{{url_for('UserRoutes.login')}}" method="post">
         {{form.csrf_token}}
@@ -68,24 +74,33 @@
 {% endif %}
       <p></p>
 
-      <div class="form-floating">
-          {{form.email(class="form-control", placeholder="xxx@gmail.com")}}
-          {{form.email.label(class='form-label')}}
+      <div class="form-floating form-group">
+          {{form.Email(class="form-control", placeholder="xxx@gmail.com")}}
+          {{form.Email.label(class='form-label')}}
       </div>
-
+        {% if form.Email.errors %}
+            {% for error in form.Email.errors %}
+                <div class="alert alert-warning" role="alert">{{error}}</div>
+            {% endfor %}
+        {% endif %}
       <p></p>
 
-      <div class="form-floating">
-          {{form.password(class="form-control", placeholder="Password")}}
-          {{form.password.label(class='form-label')}}
+      <div class="form-floating form-group">
+          {{form.Password(class="form-control", placeholder="Password")}}
+          {{form.Password.label(class='form-label')}}
       </div>
-
+        {% if form.Email.errors %}
+            {% for error in form.Password.errors %}
+                <div class="alert alert-warning" role="alert">{{error}}</div>
+            {% endfor %}
+        {% endif %}
       <p></p>
 
 {% if login == False %}
       <div class="form-floating">
-          {{form.confirm(class="form-control", placeholder="Repeat password")}}
+          {{form.confirm(class="form-control", placeholder="Repeat Password")}}
           {{form.confirm.label(class='form-label')}}
+
       </div>
 
       <p></p>

@@ -15,6 +15,9 @@ class Users(Document):
     EmailVaildated = BooleanField(default=False)
     Online = BooleanField(default=False)
 
+    def __repr__(self):
+        return '<User %r>' % self.Account
+
 
 # @login_manager.user_loader
 # def load_user(user_id):

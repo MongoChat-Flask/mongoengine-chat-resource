@@ -22,12 +22,8 @@ def send(msgObj) -> str | Response:
         server.send_message(msgObj[0])
         server.close()  # 發送完成後關閉連線
         logging.info("user.methods.VerifiedEmail.send: Send Complete!")
-        session["signal"] = {
-            "login": True,
-            "getinfo": True,
-            "message": Message["Sign-up-success"]
-        }
-        flash('Congrats', 'registration success', category='success')
+        session["signal"] = {"login": True, "getinfo": True, "message": Message["Sign-up-success"]}
+        flash('Congrats, registration success', category='success')
         return redirect(url_for('IndexRoutes.sec'))
 
     except Exception as err:

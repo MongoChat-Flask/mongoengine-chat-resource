@@ -6,7 +6,6 @@ from user.methods.config import *
 from mongo import db
 from user.methods.VerfiedEmail import establish_mail_object, check_url, send
 from user.models import Users
-import http
 
 assert isinstance(db, object)
 
@@ -28,20 +27,9 @@ def to_json(self) -> dict:
 
 def CreateUser(account: str, email: str, password: bytes) -> "flask.Response":
     """這裡要添加<輸入參數>，以新增 'users' collection 的資料(帳號註冊功能)"""
-    session["signal"] = {
-        "login": True,
-        "getinfo": True,
-        "message": ""
-    }
+    session["signal"] = {"login": True, "getinfo": True, "message": ""}
     try:
-        user = Users(
-            Account=account,
-            Email=email,
-            Password=password,
-            Friends=[],
-            ChatRooms=[],
-            EmailVaildated=False
-        )
+        user = Users(Account=account, Email=email, Password=password, Friends=[], ChatRooms=[])
         user.save()
         if Users.objects(Account=user.Account):
             msgObj = establish_mail_object(user.Email)
@@ -49,23 +37,19 @@ def CreateUser(account: str, email: str, password: bytes) -> "flask.Response":
             return send(msgObj)
         else:
             session["signal"]["message"] = Message["Error_msg1"]
-            return redirect(url_for('IndexRoutes.sec'))
+            return redirect(url_for('UserRoutes.sec'))
     # 針對各種例外情形產生response(error)，以給予相應的處理
     except mongoengine.errors.NotUniqueError:
         session["signal"]["message"] = Message["Error_msg2"]
-        return redirect(url_for('IndexRoutes.sec'))
+        return redirect(url_for('UserRoutes.sec'))
     except mongoengine.errors.ValidationError:
         session["signal"]["message"] = Message["Error_msg3"]
-        return redirect(url_for('IndexRoutes.sec'))
+        return redirect(url_for('UserRoutes.sec'))
 
 
 def CheckUser(token, random) -> str | Response:
     """Activate = (重新導引至登入頁面並通知成功及接續步驟) ? (若為有效電子郵件) : (重新導引至登入頁面並通知失敗原因)"""
-    session["signal"] = {
-        "login": True,
-        "getinfo": True,
-        "message": ""
-    }
+    session["signal"] = {"login": True, "getinfo": True, "message": ""}
     email = check_url(token, random)
     print(email)
     if not email == "":
@@ -73,24 +57,18 @@ def CheckUser(token, random) -> str | Response:
             print(email)
             # 將更動其創建好的帳號進行更新狀態以激活
             session["signal"]["message"] = Message["Activate-success"]
-            return redirect(url_for('IndexRoutes.sec'))
+            return redirect(url_for('UserRoutes.sec'))
         else:
             session["signal"]["message"] = Message["Error_msg0"]
-            return redirect(url_for('IndexRoutes.sec'))
+            return redirect(url_for('UserRoutes.sec'))
     else:
         session["signal"]["message"] = Message["Error_msg0"]
-        return redirect(url_for('IndexRoutes.sec'))
+        return redirect(url_for('UserRoutes.sec'))
 
 
 def LoginUser(email: str, password: str) -> str | Response:
     """login = (redirect_to聊天頁面) ? (有該帳號存在且經過驗證) : (重新導引至登入頁面並依狀況顯示其相應行為)"""
-    try:
-        check_point2 = Users.objects(Email=email).only("Password")
-        print(check_point2.Password)
-    except Exception:
-        return ""
-    if Users.objects(Email=email).update(upsert=True, Online=True) == 1:
-        return ""
+
     return ""
 
 
