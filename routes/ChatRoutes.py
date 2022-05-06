@@ -1,7 +1,12 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 # 建立(註冊)路由的函式
-RoomRoutes = Blueprint('RoomRoutes', __name__)
+RoomRoutes = Blueprint('RoomRoutes', __name__, template_folder="templates", static_folder="static")
+
+
+@RoomRoutes.route('/index', methods=['GET', 'POST'])
+def index():
+    return render_template('MainPage.html')
 
 
 @RoomRoutes.route('/create', methods=['GET', 'POST'])

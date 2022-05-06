@@ -100,14 +100,22 @@
       <div class="form-floating">
           {{form.confirm(class="form-control", placeholder="Repeat Password")}}
           {{form.confirm.label(class='form-label')}}
-
       </div>
 
       <p></p>
 {% endif %}
 
 {% if login == True %}
+      <div class="form-check form-switch text-start">
+        {{form.Remember(class="form-check-input")}}
+        {{form.Remember.label(class='form-label')}}
+      </div>
+
+
+      <p></p>
+
           {{form.submit(class="w-100 btn btn-lg btn-primary")}}
+
     </form>
 
       <p></p>

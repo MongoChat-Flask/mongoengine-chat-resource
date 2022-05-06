@@ -1,6 +1,5 @@
 from flask import Blueprint, request, render_template
-
-
+from flask_login import login_user
 from Controllers.UserController import *
 from models.form import LoginForm, RgisterForm
 
@@ -59,10 +58,15 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         from models.User import Users
-        user = Users.find_by_Email(form.Email.data)
-        from app import bcrypt
-        if user and user.match_password(form.Password.data, bcrypt=bcrypt):
-            pass# login_manager()
+        email = form.Email.data
+        pwd = form.Password.data
+        remember = form.Remember.data
+        user = Users.find_by_Email(email)
+        print(user)#  and user.Online
+        if user and user.match_password(password=pwd):
+            login_user(user=user, remember=remember)
+            flash('You were successfully logged in', category='success')
+            return redirect(url_for('RoomRoutes.index'))
         else:
             session["signal"] = {"login": True, "getinfo": True,
                                  "message": Message["Error_msg4"].format(form.Email.data)}

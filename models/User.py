@@ -2,15 +2,14 @@
 from flask_login import UserMixin
 # Database module
 from mongoengine import *
-from app import db
-from app import login_manager
+from app import db, login_manager
 
 assert isinstance(db, object)
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.get(user_id)
+    return Users.objects(id=user_id).first()
 
 
 class Users(Document, UserMixin):
@@ -25,22 +24,25 @@ class Users(Document, UserMixin):
 
     @classmethod
     def find_by_Account(cls, Account) -> "Users":
-        return cls.objects(Account=Account).first()
+        return cls.objects(Account=Account).all_fields().first()
 
     @classmethod
     def find_by_id(cls, pk) -> "Users":
-        return cls.objects(pk=pk).first()
+        return cls.objects(pk=pk).all_fields().first()
 
     @classmethod
     def find_by_Email(cls, Email) -> "Users":
-        return cls.objects(Email=Email).first()
+        return cls.objects(Email=Email).all_fields().first()
 
     @classmethod
-    def hash_password(cls, password, bcrypt):
-        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode("utf-8")
+    def hash_password(cls, password):
+        from app import bcrypt
+        bcrypt.generate_password_hash()
+        return bcrypt.generate_password_hash(password).decode('utf-8')
 
-    def match_password(self, password, bcrypt):
-        return bcrypt.checkpw(password.encode('utf-8'), self.Password.encode("utf-8"))
+    def match_password(self, password):
+        from app import bcrypt
+        return bcrypt.check_password_hash(self.Password, password)
 
     def __repr__(self):
         return '<User %r>' % self.Account
