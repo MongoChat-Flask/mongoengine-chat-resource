@@ -3,13 +3,14 @@ from flask_login import UserMixin
 # Database module
 from mongoengine import *
 from app import db
+from app import login_manager
 
 assert isinstance(db, object)
 
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return Users.get(user_id)
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.get(user_id)
 
 
 class Users(Document, UserMixin):

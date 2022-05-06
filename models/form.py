@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError
 
-from models.User import Users
+
 
 
 class RgisterForm(FlaskForm):
@@ -18,12 +18,14 @@ class RgisterForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_Account(self, Account):
+        from models.User import Users
         account = Users.objects(Account=Account.data).count()
         print(account)
         if account != 0:
             raise ValidationError(message='Your Name already token')
 
     def validate_Email(self, Email):
+        from models.User import Users
         email = Users.objects(Email=Email.data).count()
         print(email)
         if email != 0:
@@ -37,6 +39,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('log In')
 
     def validate_Email(self, Email):
+        from models.User import Users
         email = Users.objects(Email=Email.data).count()
         if email != 1:
             raise ValidationError(message='Your Email is not exists')
