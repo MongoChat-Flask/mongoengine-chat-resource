@@ -5,6 +5,7 @@ import email.message
 from flask import Response, redirect, url_for, session
 from itsdangerous import SignatureExpired
 from user.config import *
+from models import User
 from app import db
 import logging
 
@@ -44,8 +45,8 @@ def establish_mail_object(email_not_verified) -> tuple:
 def check_url(token, random_string) -> str:
     try:
         decrypt_mail = s.loads(token, salt='MongoChat-Activate-{}'.format(random_string), max_age=60)
-        logging.info("user email count:", Users.objects(Email=decrypt_mail).count())
-        return decrypt_mail if Users.objects(Email=decrypt_mail).count() == 1 else ""
+        logging.info("user email count:", User.Users.objects(Email=decrypt_mail).count())
+        return decrypt_mail if User.Users.objects(Email=decrypt_mail).count() == 1 else ""
     except SignatureExpired:
         logging.error("連結已過期，需重新註冊!")
         return ""
