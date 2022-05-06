@@ -13,8 +13,11 @@ Flask-AppBuilder
 flask-mongoengine  
 flask-security-too  
 flask-login
+flask_bcrypt
 mongoengine  
 dnspython  
 passlib  
 pymongo  
 requests  
+Werkzeug==2.0.0  
+jinja2==3.0.3  

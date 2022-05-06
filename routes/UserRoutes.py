@@ -76,8 +76,8 @@ def login():
 
 
 # 登出
-@UserRoutes.route('/logout', methods=['GET'])
-def logout():  # 使用者註冊
+@UserRoutes.route('/logout', methods=['POST'])
+def logout():
     return "LogoutUser()"
 
 
@@ -88,12 +88,12 @@ def info():
 
 
 # 編輯
-@UserRoutes.route('/edit', methods=['GET'])
+@UserRoutes.route('/edit', methods=['GET', 'POST'])
 def edit():
     return "EditUser()"
 
 
 # 刪除
-@UserRoutes.route('/delete', methods=['GET'])
+@UserRoutes.route('/delete', methods=['GET', 'POST'])
 def delete():
     return "DeleteUser()"

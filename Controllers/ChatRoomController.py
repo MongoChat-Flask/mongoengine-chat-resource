@@ -30,6 +30,7 @@ def chat_room_remove_member(room_id: str, user_id: str) -> "flask.Response":
     pass
 
 
-def get_member_list(room_id: str) -> list[Users]:
+def get_member_list(room_id: str) -> list[Users.Users]:
     """get all member of a chat room"""
     pass
+
