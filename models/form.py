@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError
 
-from models.User import Users
+
 
 
 class RgisterForm(FlaskForm):
@@ -18,12 +18,14 @@ class RgisterForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_Account(self, Account):
+        from models.User import Users
         account = Users.objects(Account=Account.data).count()
         print(account)
         if account != 0:
             raise ValidationError(message='Your Name already token')
 
     def validate_Email(self, Email):
+        from models.User import Users
         email = Users.objects(Email=Email.data).count()
         print(email)
         if email != 0:
@@ -34,9 +36,11 @@ class LoginForm(FlaskForm):
     """資料 網頁輸入表格 定義方式 [In html-form]"""
     Email = StringField('Email address', validators=[InputRequired(), Email()])
     Password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=50)])
+    Remember = BooleanField('Remember')
     submit = SubmitField('log In')
 
     def validate_Email(self, Email):
+        from models.User import Users
         email = Users.objects(Email=Email.data).count()
         if email != 1:
             raise ValidationError(message='Your Email is not exists')

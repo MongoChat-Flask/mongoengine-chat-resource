@@ -1,9 +1,8 @@
 from flask import Blueprint, request, render_template
-
-
+from flask_login import login_user
 from Controllers.UserController import *
 from models.form import LoginForm, RgisterForm
-from models.User import Users
+
 
 # 建立(註冊)路由的函式
 
@@ -38,6 +37,7 @@ def signup():
     print(form.validate_on_submit())
     if form.validate_on_submit():
         from app import bcrypt
+        from models.User import Users
         pw_hash = Users.hash_password(form.Password.data, bcrypt=bcrypt)
         return CreateUser(account=form.Account.data, email=form.Email.data,
                           password=pw_hash)
@@ -57,10 +57,16 @@ def Activate_account():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = Users.find_by_Email(form.Email.data)
-        from app import bcrypt
-        if user and user.match_password(form.Password.data, bcrypt=bcrypt):
-            pass# login_manager()
+        from models.User import Users
+        email = form.Email.data
+        pwd = form.Password.data
+        remember = form.Remember.data
+        user = Users.find_by_Email(email)
+        print(user)#  and user.Online
+        if user and user.match_password(password=pwd):
+            login_user(user=user, remember=remember)
+            flash('You were successfully logged in', category='success')
+            return redirect(url_for('RoomRoutes.index'))
         else:
             session["signal"] = {"login": True, "getinfo": True,
                                  "message": Message["Error_msg4"].format(form.Email.data)}
