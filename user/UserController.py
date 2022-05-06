@@ -1,9 +1,9 @@
 import mongoengine
 # 不能刪! 此行做為連接 Mongodb Atlas
 import flask
-from flask import Response, redirect, url_for, session
+from flask import Response, redirect, url_for, session, flash
 from user.methods.config import *
-from mongo import db
+from app import db
 from user.methods.VerfiedEmail import establish_mail_object, check_url, send
 from user.models import Users
 
@@ -34,6 +34,7 @@ def CreateUser(account: str, email: str, password: bytes) -> "flask.Response":
         if Users.objects(Account=user.Account):
             msgObj = establish_mail_object(user.Email)
             # 送出驗證郵件(Gmail)
+            flash('恭喜! 現在去接收郵件激活帳號吧!', category='success')
             return send(msgObj)
         else:
             session["signal"]["message"] = Message["Error_msg1"]

@@ -7,7 +7,7 @@ from flask import Response, redirect, url_for, session, flash
 from itsdangerous import SignatureExpired
 from user.methods.config import *
 from user.models import Users
-from mongo import db
+from app import db
 import logging
 
 assert isinstance(db, object)

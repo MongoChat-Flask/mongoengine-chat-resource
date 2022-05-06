@@ -1,6 +1,6 @@
 # 不能刪! 此行做為連接 Mongodb Atlas
 
-from mongo import db
+from app import db
 import flask
 from chatroom.models import ChatRoom
 from user.models import Users

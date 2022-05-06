@@ -1,7 +1,6 @@
 from flask import Blueprint, request, render_template
 from user.UserController import *
 from user import LoginForm, RgisterForm
-# import bcrypt
 
 
 # 建立(註冊)路由的函式

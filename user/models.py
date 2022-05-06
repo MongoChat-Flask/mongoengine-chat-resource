@@ -2,7 +2,9 @@ from flask_login import UserMixin
 # Database module
 from mongoengine import *
 # 不能刪! 此行做為連接 mongodb atlas cluster
-from mongo import db
+from app import db
+
+assert isinstance(db, object)
 
 
 class Users(Document):
@@ -17,7 +19,6 @@ class Users(Document):
 
     def __repr__(self):
         return '<User %r>' % self.Account
-
 
 # @login_manager.user_loader
 # def load_user(user_id):
