@@ -5,9 +5,9 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from app.config import *
 # Routes modules
-from chatroom.routes import RoomRoutes
-from message.routes import MsgRoutes
-from user.routes import UserRoutes
+from routes.ChatRoutes import RoomRoutes
+from routes.MsgRoutes import MsgRoutes
+from routes.UserRoutes import UserRoutes
 # Mongoengine
 from mongoengine import connect
 

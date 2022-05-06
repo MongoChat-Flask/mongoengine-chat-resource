@@ -2,10 +2,9 @@ import mongoengine
 # 不能刪! 此行做為連接 Mongodb Atlas
 import flask
 from flask import Response, redirect, url_for, session, flash
-from user.methods.config import *
+from user.config import *
 from app import db
-from user.methods.VerfiedEmail import establish_mail_object, check_url, send
-from user.models import Users
+from user.VerfiedEmail import establish_mail_object, check_url, send
 
 assert isinstance(db, object)
 

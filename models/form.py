@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError
 
-from user.models import Users
+from models.User import Users
 
 
 class RgisterForm(FlaskForm):

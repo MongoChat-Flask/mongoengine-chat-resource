@@ -1,11 +1,12 @@
 from flask import Blueprint, request, render_template
 
-# from app import login_manager
-from user.UserController import *
-from user import LoginForm, RgisterForm
 
+from Controllers.UserController import *
+from models.form import LoginForm, RgisterForm
+from models.User import Users
 
 # 建立(註冊)路由的函式
+
 UserRoutes = Blueprint('UserRoutes', __name__, template_folder="templates", static_folder="static")
 
 print(UserRoutes.root_path)
@@ -36,7 +37,8 @@ def signup():
     form = RgisterForm()
     print(form.validate_on_submit())
     if form.validate_on_submit():
-        pw_hash = Users.hash_password(form.Password.data)
+        from app import bcrypt
+        pw_hash = Users.hash_password(form.Password.data, bcrypt=bcrypt)
         return CreateUser(account=form.Account.data, email=form.Email.data,
                           password=pw_hash)
     else:
@@ -56,7 +58,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = Users.find_by_Email(form.Email.data)
-        from app import bcrypt, login_manager
+        from app import bcrypt
         if user and user.match_password(form.Password.data, bcrypt=bcrypt):
             pass# login_manager()
         else:
