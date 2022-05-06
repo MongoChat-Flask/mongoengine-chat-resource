@@ -19,3 +19,5 @@ dnspython
 passlib  
 pymongo  
 requests  
+Werkzeug==2.0.0
+jinja2==3.0.3
