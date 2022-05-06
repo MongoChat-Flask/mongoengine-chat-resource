@@ -24,4 +24,5 @@ Message = {
     "Error_msg1": "Error! 請重來一次!",
     "Error_msg2": "Error! 你註冊的部分資訊已被使用!",
     "Error_msg3": "Error! 請確認你輸入的資訊無誤!",
+    "Error_msg4": "Error! 郵箱和密碼不匹配！",
 }

@@ -1,4 +1,6 @@
 from flask import Blueprint, request, render_template
+
+# from app import login_manager
 from user.UserController import *
 from user import LoginForm, RgisterForm
 
@@ -34,8 +36,7 @@ def signup():
     form = RgisterForm()
     print(form.validate_on_submit())
     if form.validate_on_submit():
-        from app import bcrypt
-        pw_hash = bcrypt.generate_password_hash(form.Password.data)
+        pw_hash = Users.hash_password(form.Password.data)
         return CreateUser(account=form.Account.data, email=form.Email.data,
                           password=pw_hash)
     else:
@@ -54,8 +55,14 @@ def Activate_account():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # bcrypt.check_password_hash(pw_hash, 'hunter2')  # returns True
-        return LoginUser(email=form.Email.data, password=form.Password.data)
+        user = Users.find_by_Email(form.Email.data)
+        from app import bcrypt, login_manager
+        if user and user.match_password(form.Password.data, bcrypt=bcrypt):
+            pass# login_manager()
+        else:
+            session["signal"] = {"login": True, "getinfo": True,
+                                 "message": Message["Error_msg4"].format(form.Email.data)}
+            return redirect(url_for('UserRoutes.sec'))
     else:
         return render_template('index.html', login=True, form=form)
 
