@@ -2,8 +2,7 @@
 
 from app import db
 import flask
-from chatroom.models import ChatRoom
-from user.models import Users
+from models import User as Users
 
 assert isinstance(db, object)
 

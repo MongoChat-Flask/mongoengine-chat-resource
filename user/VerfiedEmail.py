@@ -1,12 +1,10 @@
-import http
 import smtplib
 import uuid
 import email.message
 
-from flask import Response, redirect, url_for, session, flash
+from flask import Response, redirect, url_for, session
 from itsdangerous import SignatureExpired
-from user.methods.config import *
-from user.models import Users
+from user.config import *
 from app import db
 import logging
 
