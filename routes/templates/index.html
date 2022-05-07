@@ -61,7 +61,7 @@
               <div class="alert alert-warning" role="alert">{{error}}</div>
             {% endfor %}
           {% endif %}
-{% else %}
+        {% else %}
     <form action="{{url_for('UserRoutes.login')}}" method="post">
         {{form.csrf_token}}
 
