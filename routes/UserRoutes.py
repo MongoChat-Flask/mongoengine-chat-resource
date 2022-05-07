@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, logout_user
 from Controllers.UserController import *
 from models.form import LoginForm, RgisterForm
 
@@ -86,7 +86,8 @@ def login():
 # 登出
 @UserRoutes.route('/logout', methods=['GET'])
 def logout():  # 使用者註冊
-    return "LogoutUser()"
+    logout_user()
+    return redirect(url_for('UserRoutes.login'))
 
 
 # 讀取資訊

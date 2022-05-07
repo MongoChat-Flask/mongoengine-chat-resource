@@ -68,13 +68,13 @@
       <a href="{{url_for('UserRoutes.start')}}">
           <img class="mb-4" src="{{url_for('.static', filename='imgs/logo.png')}}" alt="" width="300" height="auto">
       </a>
-    <div class="alert alert-info" role="alert">
+
       {% with messages = get_flashed_messages() %}
                       {% if messages %}
-                        {{messages}}
+                        <div class="alert alert-info" role="alert">{{messages}} </div>
                       {% endif %}
                     {% endwith %}
-    </div>
+
       <h1 class="h3 mb-3 fw-normal">Sign in</h1>
 {% endif %}
       <p></p>

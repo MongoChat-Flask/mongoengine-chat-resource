@@ -15,7 +15,8 @@
                       {% endif %}
                     {% endwith %}
                 </div>
-                <h1>{{ current_user.Account }}</h1>
+                <h1>{{ current_user.Account }}</h1><br>
+                <a href="{{ url_for('UserRoutes.logout') }}">登出</a>
             </div>
         </div>
     </div>
