@@ -1,24 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% extends 'bootstrap/base.html' %}
+{% block head %}
+    {% block title %}
+    <title>This is the index page</title>
+    {% endblock title%}
+  {% block style %}
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+  <link rel="shortcut icon" href="#"/>
+  <link href="{{url_for('.static', filename='css/signin.css')}}" rel="stylesheet">
+  <link href="{{url_for('.static', filename='bootstrap5/css/bootstrap.min.css')}}" rel="stylesheet">
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+  {% endblock style %}
+
+  {% block metas %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.88.1">
+  {% endblock metas %}
+
+{% endblock head %}
 <body>
+
+    {% block navbar %}
+    {% endblock %}
+
+    {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <div class="alert alert-info" role="alert">
-                    {% with messages = get_flashed_messages() %}
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
                       {% if messages %}
-                        {{messages}}
+                        {% for category, message in messages %}
+                       <div class="alert alert-{{category}}" role="alert"> {{message}} </div>
+                        {% endfor %}
                       {% endif %}
                     {% endwith %}
-                </div>
+
                 <h1>{{ current_user.Account }}</h1><br>
-                <a href="{{ url_for('UserRoutes.logout') }}">登出</a>
+                <a href="{{ url_for('UserRoutes.logout') }}">帳號登出</a>
+                <a href="{{ url_for('UserRoutes.delete') }}">帳號刪除</a>
             </div>
         </div>
     </div>
+    {% endblock content %}
+
 </body>
 </html>

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template
-from flask_login import login_user, current_user, logout_user
+from flask_login import login_user, current_user, logout_user, login_required
 from Controllers.UserController import *
 from models.form import LoginForm, RgisterForm
 
@@ -66,7 +66,7 @@ def login():
         pwd = form.Password.data
         remember = form.Remember.data
         user = Users.find_by_Email(email)
-        print(user)  # and user.Online
+        print(user.id)  # and user.Online
         if user and user.match_password(password=pwd):
             login_user(user=user, remember=remember)
             flash('You were successfully logged in', category='success')
@@ -85,6 +85,7 @@ def login():
 
 # 登出
 @UserRoutes.route('/logout', methods=['GET'])
+@login_required
 def logout():  # 使用者註冊
     logout_user()
     return redirect(url_for('UserRoutes.login'))
@@ -92,17 +93,30 @@ def logout():  # 使用者註冊
 
 # 讀取資訊
 @UserRoutes.route('/info', methods=['GET'])
+@login_required
 def info():
     return "InfoUser()"
 
 
 # 編輯
 @UserRoutes.route('/edit', methods=['GET'])
+@login_required
 def edit():
     return "EditUser()"
 
 
 # 刪除
 @UserRoutes.route('/delete', methods=['GET'])
+@login_required
 def delete():
-    return "DeleteUser()"
+    delete_Account = current_user.Account
+    from models.Users import Users
+    user = Users.objects(Account=delete_Account).first()
+    user.delete()
+    if Users.objects(Account=delete_Account).count()==0:
+        logout_user()
+        flash('Success! Account already deleted!', category='success')
+        return redirect(url_for('UserRoutes.login'))
+    else:
+        flash('Error! Can not delete your Account!', category='danger')
+        return redirect(url_for('ChatRoutes.index'))
