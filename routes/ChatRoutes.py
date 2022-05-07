@@ -5,8 +5,9 @@ from flask_login import login_required
 RoomRoutes = Blueprint('RoomRoutes', __name__, template_folder="templates", static_folder="static")
 
 
-@login_required
+
 @RoomRoutes.route('/index', methods=['GET', 'POST'])
+@login_required
 def index():
     return render_template('MainPage.html')
 

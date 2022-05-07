@@ -38,18 +38,17 @@
 
 
 {% block body %}
-  <body class="text-center">
+  <body class="text-center ">
 {% block content %}
+<div class="container-fluid">
 {% import "bootstrap/wtf.html" as wtf %}
   <main class="form-signin">
 {% if login == False %}
     <form action="{{url_for('UserRoutes.signup')}}" method="post">
         {{form.csrf_token}}
-
       <a href="{{url_for('UserRoutes.start')}}">
           <img class="mb-4" src="{{url_for('.static', filename='imgs/logo.png')}}" alt="" width="300" height="auto">
       </a>
-
       <h1 class="h3 mb-3 fw-normal">Sign up</h1>
 
       <div class="form-floating form-group">
@@ -69,7 +68,13 @@
       <a href="{{url_for('UserRoutes.start')}}">
           <img class="mb-4" src="{{url_for('.static', filename='imgs/logo.png')}}" alt="" width="300" height="auto">
       </a>
-
+    <div class="alert alert-info" role="alert">
+      {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        {{messages}}
+                      {% endif %}
+                    {% endwith %}
+    </div>
       <h1 class="h3 mb-3 fw-normal">Sign in</h1>
 {% endif %}
       <p></p>
@@ -149,6 +154,8 @@
       transform: translate(-50%, 0); bottom: 10px;">&copy; 2022</p>
 
   </main>
+</div>
+
 {% endblock content %}
   </body>
 {% endblock body %}
