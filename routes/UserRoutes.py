@@ -71,7 +71,9 @@ def login():
             login_user(user=user, remember=remember)
             flash('You were successfully logged in', category='success')
             # next=...
-
+            if request.args.get('next'):
+                next_page = request.args.get('next')
+                return redirect(url_for(next_page))
             return redirect(url_for('RoomRoutes.index'))
         else:
             session["signal"] = {"login": True, "getinfo": True,
