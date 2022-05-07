@@ -1,8 +1,7 @@
 from flask import Blueprint, request, render_template
-from flask_login import login_user
+from flask_login import login_user, current_user
 from Controllers.UserController import *
 from models.form import LoginForm, RgisterForm
-
 
 # 建立(註冊)路由的函式
 
@@ -33,12 +32,14 @@ def index():
 # 註冊
 @UserRoutes.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        # 判斷當前user狀態
+        return redirect(url_for('ChatRoutes.index'))
     form = RgisterForm()
     print(form.validate_on_submit())
     if form.validate_on_submit():
-        from app import bcrypt
-        from models.User import Users
-        pw_hash = Users.hash_password(form.Password.data, bcrypt=bcrypt)
+        from models.Users import Users
+        pw_hash = Users.hash_password(password=form.Password.data)
         return CreateUser(account=form.Account.data, email=form.Email.data,
                           password=pw_hash)
     else:
@@ -55,17 +56,21 @@ def Activate_account():
 # 登入
 @UserRoutes.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        # 判斷當前user狀態
+        return redirect(url_for('ChatRoutes.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        from models.User import Users
+        from models.Users import Users
         email = form.Email.data
         pwd = form.Password.data
         remember = form.Remember.data
         user = Users.find_by_Email(email)
-        print(user)#  and user.Online
+        print(user)  # and user.Online
         if user and user.match_password(password=pwd):
             login_user(user=user, remember=remember)
             flash('You were successfully logged in', category='success')
+            # next=...
             return redirect(url_for('RoomRoutes.index'))
         else:
             session["signal"] = {"login": True, "getinfo": True,

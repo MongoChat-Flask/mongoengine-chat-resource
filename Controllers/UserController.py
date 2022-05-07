@@ -28,11 +28,16 @@ def CreateUser(account: str, email: str, password: bytes) -> "flask.Response":
     """這裡要添加<輸入參數>，以新增 'users' collection 的資料(帳號註冊功能)"""
     session["signal"] = {"login": True, "getinfo": True, "message": ""}
     try:
+        from models.Users import Users
         user = Users(Account=account, Email=email, Password=password, Friends=[], ChatRooms=[])
+        print(user)
         user.save()
+        print("save")
         if Users.objects(Account=user.Account):
+            print("establish_mail_object")
             msgObj = establish_mail_object(user.Email)
             # 送出驗證郵件(Gmail)
+            print("send")
             flash('恭喜! 現在去接收郵件激活帳號吧!', category='success')
             return send(msgObj)
         else:
@@ -53,6 +58,7 @@ def CheckUser(token, random) -> str | Response:
     email = check_url(token, random)
     print(email)
     if not email == "":
+        from models.Users import Users
         if Users.objects(Email=email).update(upsert=True, EmailVaildated=True) == 1:
             print(email)
             # 將更動其創建好的帳號進行更新狀態以激活

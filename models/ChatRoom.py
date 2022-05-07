@@ -1,5 +1,5 @@
 from mongoengine import *
-import User
+import Users
 
 
 class ChatRoom(Document):

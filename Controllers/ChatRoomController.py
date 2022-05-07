@@ -2,7 +2,7 @@
 
 from app import db
 import flask
-from models import User as Users
+from models import Users as Users
 
 assert isinstance(db, object)
 

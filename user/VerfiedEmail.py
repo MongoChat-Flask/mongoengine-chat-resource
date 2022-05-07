@@ -42,7 +42,7 @@ def establish_mail_object(email_not_verified) -> tuple:
 
 def check_url(token, random_string) -> str:
     try:
-        from models.User import Users
+        from models.Users import Users
         decrypt_mail = s.loads(token, salt='MongoChat-Activate-{}'.format(random_string), max_age=60)
         logging.info("user email count:", Users.objects(Email=decrypt_mail).count())
         return decrypt_mail if Users.objects(Email=decrypt_mail).count() == 1 else ""

@@ -2,7 +2,7 @@ from mongoengine import *
 from models.ChatRoom import ChatRoom
 from datetime import datetime
 
-import User
+import Users
 
 
 class Message(Document):

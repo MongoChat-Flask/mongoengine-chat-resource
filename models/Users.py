@@ -37,8 +37,7 @@ class Users(Document, UserMixin):
     @classmethod
     def hash_password(cls, password):
         from app import bcrypt
-        bcrypt.generate_password_hash()
-        return bcrypt.generate_password_hash(password).decode('utf-8')
+        return bcrypt.generate_password_hash(password)
 
     def match_password(self, password):
         from app import bcrypt
