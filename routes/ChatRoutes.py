@@ -14,6 +14,8 @@ def index():
 
 @RoomRoutes.route('/getMemberList', methods=['GET'])
 def get_member_list():
+    # test data
+    # future implementation must follow the JSON format
     return '{"_id":["0","2","3","5"]}'
 
 
