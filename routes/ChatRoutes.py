@@ -6,10 +6,10 @@ RoomRoutes = Blueprint('RoomRoutes', __name__, template_folder="templates", stat
 
 
 
-@RoomRoutes.route('/index', methods=['GET', 'POST'])
-@login_required
+@RoomRoutes.route('/index', methods=['GET'])
+#@login_required
 def index():
-    return render_template('MainPage.html')
+    return render_template('ChatRoom.html')
 
 
 @login_required
@@ -42,4 +42,4 @@ def remove_member():
 
 @RoomRoutes.route('/getMemberList', methods=['GET'])
 def get_member_list():
-    return "get_member_list()"
+    return '{"_id":["0","2","3","5"]}'
