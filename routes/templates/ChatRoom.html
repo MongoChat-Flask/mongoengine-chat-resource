@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Room</title>
+
+    <link href="{{url_for('.static', filename='css/signin.css')}}" rel="stylesheet">
+    <link href="{{url_for('.static', filename='bootstrap5/css/bootstrap.min.css')}}" rel="stylesheet">
+
+    <style>
+        div.inline {
+            display: flex;
+            justify-content: space-around;
+            flex-direction: row;
+        }
+
+        div#main-bg {
+            width: 90%;
+            margin-left: 5%;
+            height: 100%;
+        }
+    </style>
+
+    <script>
+        let mainDiv, memberListLabel;
+
+        function httpGet(theUrl) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", theUrl, false);
+            xmlHttp.send(null);
+            return xmlHttp.responseText;
+        }
+
+        function start() {
+            mainDiv = document.getElementById("main-bg");
+            memberListLabel = document.getElementById("member-list");
+            let cont = httpGet("getMemberList");
+            let list = JSON.parse(cont);
+            memberListLabel.innerHTML = "member list(_id): " + list["_id"] + "&nbsp;&nbsp;&nbsp;&nbsp;### 需提供由_id轉換成名稱的function ###";
+        }
+
+        window.addEventListener("load", start, false);
+    </script>
+</head>
+
+<body>
+    <div class="p-3 mb-2 bg-dark text-white position-relative" id="main-bg">
+        <label id="member-list" class="position-absolute fs-3 top-0 end-0"></label>
+
+        <div id="msg-detail" class="fs-2">
+            msg1
+            <br>
+            msg2
+            <br>
+            msg3
+            <br>
+            msg4
+        </div>
+
+        <br>
+        <div class="inline" id="buttons">
+            <form>
+                <button class="w-100 btn btn-lg btn-primary" type="submit"
+                    formaction="{{url_for('RoomRoutes.add_member')}}" formmethod="post">Add Member</button>
+            </form>
+            <form>
+                <button class="w-100 btn btn-lg btn-danger" type="submit"
+                    formaction="{{url_for('RoomRoutes.remove_member')}}" formmethod="post">Remove Member</button>
+            </form>
+            <form>
+                <button class="w-100 btn btn-lg btn-danger" type="submit" formaction="{{url_for('RoomRoutes.delete')}}"
+                    formmethod="post">Delete Channel</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
