@@ -12,34 +12,34 @@ def index():
     return render_template('ChatRoom.html')
 
 
+@RoomRoutes.route('/getMemberList', methods=['GET'])
+def get_member_list():
+    return '{"_id":["0","2","3","5"]}'
+
+
 @login_required
-@RoomRoutes.route('/create', methods=['GET', 'POST'])
+@RoomRoutes.route('/create', methods=['POST'])
 def create():
     return "create_chat_room()"
 
 
 @login_required
-@RoomRoutes.route('/rename', methods=['GET', 'POST'])
+@RoomRoutes.route('/rename', methods=['POST'])
 def rename():
     return "rename_chat_room()"
 
 
 @login_required
-@RoomRoutes.route('/delete', methods=['GET', 'POST'])
+@RoomRoutes.route('/delete', methods=['POST'])
 def delete():
     return "delete_chat_room()"
 
 
-@RoomRoutes.route('/addMember', methods=['GET', 'POST'])
+@RoomRoutes.route('/addMember', methods=['POST'])
 def add_member():
     return "chat_room_add_member()"
 
 
-@RoomRoutes.route('/removeMember', methods=['GET', 'POST'])
+@RoomRoutes.route('/removeMember', methods=['POST'])
 def remove_member():
     return "chat_room_remove_member()"
-
-
-@RoomRoutes.route('/getMemberList', methods=['GET'])
-def get_member_list():
-    return '{"_id":["0","2","3","5"]}'
