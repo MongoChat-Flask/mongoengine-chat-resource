@@ -98,6 +98,14 @@ def info():
     return "InfoUser()"
 
 
+# 讀取聊天室名單
+@UserRoutes.route('/chat_room_list', methods=['GET'])
+#@login_required
+def chat_room_list():
+    # must follow JSON format
+    return '{"_id":["1","2","4","5"]}'
+
+
 # 編輯
 @UserRoutes.route('/edit', methods=['GET'])
 @login_required
