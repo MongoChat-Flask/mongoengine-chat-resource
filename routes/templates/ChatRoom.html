@@ -10,7 +10,8 @@
     <link href="{{url_for('.static', filename='css/chatroom.css')}}" rel="stylesheet">
 
     <script>
-        let mainDiv, memberListLabel;
+        let mainDiv, memberListLabel, chatListLabel;
+        let chatroomButtonContainer;
 
         function httpGet(theUrl) {
             var xmlHttp = new XMLHttpRequest();
@@ -22,9 +23,23 @@
         function start() {
             mainDiv = document.getElementById("main-bg");
             memberListLabel = document.getElementById("member-list");
+            chatListLabel = document.getElementById("chatroom-list");
+            chatroomButtonContainer = document.getElementById("chatroom-button-container");
             let cont = httpGet("getMemberList");
             let list = JSON.parse(cont);
             memberListLabel.innerHTML = "member list(_id): " + list["_id"] + "&nbsp;&nbsp;&nbsp;&nbsp;### 需提供由_id轉換成名稱的function ###";
+            cont = httpGet("/user/chat_room_list");
+            let chatList = JSON.parse(cont);
+            chatListLabel.innerHTML = "chatroom list(_id): ";
+            let temp = "";
+            for (let i = 0; i < chatList["_id"].length; i++) {
+                temp += "<button class='w-50 btn btn-lg btn-primary' onclick='switchChatRoom(" + chatList["_id"][i] + ")'>" + chatList["_id"][i] + "</button><br><br>";
+            }
+            chatroomButtonContainer.innerHTML = temp;
+        }
+
+        function switchChatRoom(roomID) {
+            console.log(roomID);
         }
 
         window.addEventListener("load", start, false);
@@ -32,59 +47,66 @@
 </head>
 
 <body>
-    <div class="p-3 mb-2 bg-dark text-white position-relative" id="main-bg">
-        <label id="member-list" class="position-absolute fs-3 top-0 end-0"></label>
+    <div class="col-6 col-md-4">
+        <h1 class="position-absolute fs-3 top-0 start-0" id="chatroom-list">Chatroom List</h1>
+        <span id="chatroom-button-container"></span>
+    </div>
+    <div class="col-sm-6 col-md-8">
+        <div class="p-3 mb-2 bg-dark text-white position-relative" id="main-bg">
+            <label id="member-list" class="position-absolute fs-3 top-0 end-0"></label>
 
-        <div id="msg-detail" class="fs-2 position-relative">
-            <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg1</label>
-            <br>
-            <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg2</label>
-            <br>
-            <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg3</label>
-            <br>
-            <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg4</label>
-            <br>
-            <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg5</label>
-            <br>
-            <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg6</label>
-            <br>
-            <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg7</label>
-            <br>
-            <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg8</label>
-            <br>
-            <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg9</label>
-            <br>
-            <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgA</label>
-            <br>
-            <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgB</label>
-            <br>
-            <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgC</label>
-            <br>
-            <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgD</label>
-            <br>
-            <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgE</label>
-            <br>
-            <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgF</label>
-        </div>
+            <div id="msg-detail" class="fs-2 position-relative">
+                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg1</label>
+                <br>
+                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg2</label>
+                <br>
+                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg3</label>
+                <br>
+                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg4</label>
+                <br>
+                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg5</label>
+                <br>
+                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg6</label>
+                <br>
+                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg7</label>
+                <br>
+                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg8</label>
+                <br>
+                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg9</label>
+                <br>
+                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgA</label>
+                <br>
+                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgB</label>
+                <br>
+                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgC</label>
+                <br>
+                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgD</label>
+                <br>
+                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgE</label>
+                <br>
+                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgF</label>
+            </div>
 
-        <br>
+            <br>
 
-        <div class="footer">
-            <div class="inline" id="buttons">
-                <form>
-                    <button class="w-100 btn btn-lg btn-primary" type="submit"
-                        formaction="{{url_for('RoomRoutes.add_member')}}" formmethod="post">Add Member</button>
-                </form>
-                <label class="place-holder">space</label>
-                <form>
-                    <button class="w-100 btn btn-lg btn-danger" type="submit"
-                        formaction="{{url_for('RoomRoutes.remove_member')}}" formmethod="post">Remove Member</button>
-                </form>
-                <label class="place-holder">space</label>
-                <form>
-                    <button class="w-100 btn btn-lg btn-danger" type="submit"
-                        formaction="{{url_for('RoomRoutes.delete')}}" formmethod="post">Delete Channel</button>
-                </form>
+            <div class="footer">
+                <div class="inline" id="buttons">
+                    <form>
+                        <button class="w-100 btn btn-lg btn-primary" type="submit"
+                            formaction="{{url_for('RoomRoutes.add_member')}}" formmethod="post">Add Member</button>
+                    </form>
+                    <label class="place-holder">space</label>
+                    <form>
+                        <button class="w-100 btn btn-lg btn-danger" type="submit"
+                            formaction="{{url_for('RoomRoutes.remove_member')}}" formmethod="post">Remove
+                            Member</button>
+                    </form>
+                    <label class="place-holder">space</label>
+                    <form>
+                        <button class="w-100 btn btn-lg btn-danger" type="submit"
+                            formaction="{{url_for('RoomRoutes.delete')}}" formmethod="post">Delete Channel</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
