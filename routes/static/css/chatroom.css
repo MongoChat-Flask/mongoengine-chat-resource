@@ -1,6 +1,10 @@
+* {
+    color: white;
+}
+
 body {
     background-color: #212529;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 div.inline {
@@ -13,11 +17,6 @@ div.footer {
     position: absolute;
     bottom: 15px;
     right: 15px;
-}
-
-div#main-bg {
-    width: 100vw;
-    height: 100vh;
 }
 
 div#msg-detail {
