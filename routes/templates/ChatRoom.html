@@ -7,60 +7,7 @@
 
     <link href="{{url_for('.static', filename='css/signin.css')}}" rel="stylesheet">
     <link href="{{url_for('.static', filename='bootstrap5/css/bootstrap.min.css')}}" rel="stylesheet">
-
-    <style>
-        body {
-            background-color: #212529;
-            overflow: hidden;
-        }
-
-        div.inline {
-            display: flex;
-            justify-content: space-between;
-            flex-direction: row;
-        }
-
-        div.footer {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-        }
-
-        div#main-bg {
-            width: 100vw;
-            height: 100vh;
-        }
-
-        div#msg-detail {
-            min-height: 70%;
-            margin-top: 5%;
-            overflow-x: hidden;
-        }
-
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        #msg-detail::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Hide scrollbar for IE, Edge and Firefox */
-        #msg-detail {
-            -ms-overflow-style: none;
-            /* IE and Edge */
-            scrollbar-width: none;
-            /* Firefox */
-        }
-
-        label.place-holder {
-            color: transparent;
-        }
-
-        label.msg {
-            margin-left: 3%;
-            margin-right: 3%;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-    </style>
+    <link href="{{url_for('.static', filename='css/chatroom.css')}}" rel="stylesheet">
 
     <script>
         let mainDiv, memberListLabel;
