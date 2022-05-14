@@ -1,15 +1,17 @@
 from flask import Blueprint, render_template
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 # 建立(註冊)路由的函式
-RoomRoutes = Blueprint('RoomRoutes', __name__, template_folder="templates", static_folder="static")
 
+RoomRoutes = Blueprint('RoomRoutes', __name__, template_folder="templates", static_folder="static")
+# 預設聊天室 -> 大家第一次登入後所擁有的聊天室(global，也就是大廳;): 不做聊天存儲
+ROOMS = ["global", "users"]
 
 
 @RoomRoutes.route('/index', methods=['GET'])
-#@login_required
+# @login_required
 def index():
-    return render_template('ChatRoom.html')
+    return render_template('chat.html', username=current_user.Account, rooms=ROOMS)
 
 
 @RoomRoutes.route('/getMemberList', methods=['GET'])
