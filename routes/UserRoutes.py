@@ -10,6 +10,11 @@ UserRoutes = Blueprint('UserRoutes', __name__, template_folder="templates", stat
 print(UserRoutes.root_path)
 
 
+@UserRoutes.route('/1', methods=['GET'])
+def test():
+    return render_template('chat.html')
+
+
 # 按间距中的绿色按钮以运行脚本。
 @UserRoutes.route('', methods=['GET'], endpoint='start')
 @UserRoutes.route('/index', methods=['GET'], endpoint='sec')
@@ -66,10 +71,10 @@ def login():
         pwd = form.Password.data
         remember = form.Remember.data
         user = Users.find_by_Email(email)
-        print(user.id)  # and user.Online
+        # print(user.id)  # and user.Online
         if user and user.match_password(password=pwd):
             login_user(user=user, remember=remember)
-            flash('You were successfully logged in', category='success')
+            # flash('You were successfully logged in', category='success')
             # next=...
             if request.args.get('next'):
                 next_page = request.args.get('next')
@@ -88,6 +93,7 @@ def login():
 @login_required
 def logout():  # 使用者註冊
     logout_user()
+    flash('You were successfully logged out', category='success')
     return redirect(url_for('UserRoutes.login'))
 
 
@@ -121,7 +127,7 @@ def delete():
     from models.Users import Users
     user = Users.objects(Account=delete_Account).first()
     user.delete()
-    if Users.objects(Account=delete_Account).count()==0:
+    if Users.objects(Account=delete_Account).count() == 0:
         logout_user()
         flash('Success! Account already deleted!', category='success')
         return redirect(url_for('UserRoutes.login'))

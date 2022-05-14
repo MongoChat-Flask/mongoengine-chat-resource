@@ -10,6 +10,8 @@ from routes.MsgRoutes import MsgRoutes
 from routes.UserRoutes import UserRoutes
 # Mongoengine
 from mongoengine import connect
+# SocketIO
+from flask_socketio import SocketIO, send
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -22,6 +24,7 @@ app.register_blueprint(RoomRoutes, url_prefix="/chat-r/")
 Bootstrap(app)
 db = connect(db="chat", host=DB_URI)
 bcrypt = Bcrypt(app)
+socketio = SocketIO(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'UserRoutes.login'
 login_manager.login_message = '你必須登入才能存取該資源'
