@@ -12,6 +12,7 @@
     <script>
         let mainDiv, memberListLabel, chatListLabel;
         let chatroomButtonContainer;
+        let currentChatRoom = 1;
 
         function httpGet(theUrl) {
             var xmlHttp = new XMLHttpRequest();
@@ -33,12 +34,19 @@
             chatListLabel.innerHTML = "chatroom list(_id): ";
             let temp = "";
             for (let i = 0; i < chatList["_id"].length; i++) {
-                temp += "<button class='w-50 btn btn-lg btn-primary' onclick='switchChatRoom(" + chatList["_id"][i] + ")'>chatroom" + chatList["_id"][i] + "</button><br><br>";
+                temp += "<button class='w-50 btn btn-lg btn-primary left-list-btn' onclick='switchChatRoom(" + chatList["_id"][i] + ")'>chatroom" + chatList["_id"][i] + "</button><br><br>";
             }
             chatroomButtonContainer.innerHTML = temp;
+
+            document.getElementById("send-btn").addEventListener("click", function() {
+                switchChatRoom(currentChatRoom);
+            }, false);
+
+            switchChatRoom(currentChatRoom);
         }
 
         function switchChatRoom(roomID) {
+            currentChatRoom = roomID;
             // console.log(roomID);
             let msgs = httpGet("/msg/get");
             msgs = JSON.parse(msgs)["msgs"];
@@ -46,9 +54,9 @@
             let detail = "";
 
             for (let i = 0; i < msgs.length; i++) {
-                detail += "<label class='msg position-absolute start-0 border border-3 border-primary rounded-pill'>" +
+                detail += "<label class='msg position-absolute start-0 border border-3 border-primary rounded-pill'>&nbsp;" +
                     msgs[i] +
-                    "</label><br><br>";
+                    "&nbsp;</label><br><br>";
             }
             msgDetail.innerHTML = detail;
         }
@@ -58,7 +66,7 @@
 </head>
 
 <body>
-    <div class="col-6 col-md-4">
+    <div class="col-6 col-md-4" id="left-list">
         <h1 class="position-absolute fs-3 top-0 start-0" id="chatroom-list">Chatroom List</h1>
         <span id="chatroom-button-container"></span>
     </div>
