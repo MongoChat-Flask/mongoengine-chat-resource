@@ -55,7 +55,9 @@ label.msg {
 }
 
 #input-msg {
-    width: 90%;
+    height: 3em;
+    font-size: large;
+    width: 100%;
     color: black;
 }
 
@@ -65,4 +67,17 @@ label.msg {
 
 #send-btn {
     width: 10%;
+}
+
+#left-list {
+    /* margin-left: 20px; */
+}
+
+.left-list-btn {
+    margin-left: 20px;
+}
+
+#send-btn {
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
