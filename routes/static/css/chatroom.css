@@ -15,26 +15,30 @@ div.inline {
 
 div.footer {
     position: absolute;
-    bottom: 15px;
+    bottom: 0px;
     right: 15px;
 }
 
 div#msg-detail {
-    min-height: 70%;
+    height: 20em;
     margin-top: 5%;
     overflow-x: hidden;
 }
 
+#main-bg {
+    height: 50%;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 #msg-detail::-webkit-scrollbar {
-    display: none;
+    /* display: none; */
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 #msg-detail {
-    -ms-overflow-style: none;
+    /* -ms-overflow-style: none; */
     /* IE and Edge */
-    scrollbar-width: none;
+    /* scrollbar-width: none; */
     /* Firefox */
 }
 
@@ -48,4 +52,17 @@ label.msg {
     margin-right: 3%;
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+#input-msg {
+    width: 90%;
+    color: black;
+}
+
+#tmp {
+    display: inline;
+}
+
+#send-btn {
+    width: 10%;
 }
