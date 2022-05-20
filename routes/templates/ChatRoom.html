@@ -33,13 +33,24 @@
             chatListLabel.innerHTML = "chatroom list(_id): ";
             let temp = "";
             for (let i = 0; i < chatList["_id"].length; i++) {
-                temp += "<button class='w-50 btn btn-lg btn-primary' onclick='switchChatRoom(" + chatList["_id"][i] + ")'>" + chatList["_id"][i] + "</button><br><br>";
+                temp += "<button class='w-50 btn btn-lg btn-primary' onclick='switchChatRoom(" + chatList["_id"][i] + ")'>chatroom" + chatList["_id"][i] + "</button><br><br>";
             }
             chatroomButtonContainer.innerHTML = temp;
         }
 
         function switchChatRoom(roomID) {
-            console.log(roomID);
+            // console.log(roomID);
+            let msgs = httpGet("/msg/get");
+            msgs = JSON.parse(msgs)["msgs"];
+            let msgDetail = document.getElementById("msg-detail");
+            let detail = "";
+
+            for (let i = 0; i < msgs.length; i++) {
+                detail += "<label class='msg position-absolute start-0 border border-3 border-primary rounded-pill'>" +
+                    msgs[i] +
+                    "</label><br><br>";
+            }
+            msgDetail.innerHTML = detail;
         }
 
         window.addEventListener("load", start, false);
@@ -57,33 +68,33 @@
 
             <div id="msg-detail" class="fs-2 position-relative">
                 <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg1</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg2</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg3</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg4</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg5</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg6</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg7</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg8</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg9</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgA</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgB</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgC</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgD</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgE</label>
-                <br>
+                <br><br>
                 <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgF</label>
             </div>
 
