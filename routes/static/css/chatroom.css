@@ -87,6 +87,10 @@ label.msg {
   width: 100%;
 }
 
+.ferr {
+    display: none;
+}
+
 .navTitle {
   display: flex;
   flex-direction: row;
