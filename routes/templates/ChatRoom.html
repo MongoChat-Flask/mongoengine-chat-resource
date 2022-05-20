@@ -2,114 +2,164 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Chat Room</title>
+  <meta charset="UTF-8">
+  <title>Chat Room</title>
 
-    <link href="{{url_for('.static', filename='css/signin.css')}}" rel="stylesheet">
-    <link href="{{url_for('.static', filename='bootstrap5/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{url_for('.static', filename='css/chatroom.css')}}" rel="stylesheet">
+  <link href="{{url_for('.static', filename='css/signin.css')}}" rel="stylesheet">
+  <link href="{{url_for('.static', filename='bootstrap5/css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('.static', filename='css/chatroom.css')}}" rel="stylesheet">
 
-    <script>
-        let mainDiv, memberListLabel, chatListLabel;
-        let chatroomButtonContainer;
+  <script>
+    let mainDiv, memberListLabel, chatListLabel;
+    let chatroomButtonContainer;
+    let currentChatRoom = 1;
 
-        function httpGet(theUrl) {
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", theUrl, false);
-            xmlHttp.send(null);
-            return xmlHttp.responseText;
-        }
+    function httpGet(theUrl) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", theUrl, false);
+      xmlHttp.send(null);
+      return xmlHttp.responseText;
+    }
 
-        function start() {
-            mainDiv = document.getElementById("main-bg");
-            memberListLabel = document.getElementById("member-list");
-            chatListLabel = document.getElementById("chatroom-list");
-            chatroomButtonContainer = document.getElementById("chatroom-button-container");
-            let cont = httpGet("getMemberList");
-            let list = JSON.parse(cont);
-            memberListLabel.innerHTML = "member list(_id): " + list["_id"] + "&nbsp;&nbsp;&nbsp;&nbsp;### 需提供由_id轉換成名稱的function ###";
-            cont = httpGet("/user/chat_room_list");
-            let chatList = JSON.parse(cont);
-            chatListLabel.innerHTML = "chatroom list(_id): ";
-            let temp = "";
-            for (let i = 0; i < chatList["_id"].length; i++) {
-                temp += "<button class='w-50 btn btn-lg btn-primary' onclick='switchChatRoom(" + chatList["_id"][i] + ")'>" + chatList["_id"][i] + "</button><br><br>";
-            }
-            chatroomButtonContainer.innerHTML = temp;
-        }
+    function start() {
+      mainDiv = document.getElementById("main-bg");
+      memberListLabel = document.getElementById("member-list");
+      chatListLabel = document.getElementById("chatroom-list");
+      chatroomButtonContainer = document.getElementById("chatroom-button-container");
+      let cont = httpGet("getMemberList");
+      let list = JSON.parse(cont);
+      memberListLabel.innerHTML = "member list(_id): " + list["_id"] + "&nbsp;&nbsp;&nbsp;&nbsp;### 需提供由_id轉換成名稱的function ###";
+      cont = httpGet("/user/chat_room_list");
+      let chatList = JSON.parse(cont);
+      chatListLabel.innerHTML = "chatroom list(_id): ";
+      let temp = "";
+      for (let i = 0; i < chatList["_id"].length; i++) {
+        temp += "<button class='w-50 btn btn-lg btn-primary left-list-btn' onclick='switchChatRoom(" + chatList["_id"][i] + ")'>chatroom" +
+          chatList["_id"][i] + "</button><br><br>";
+      }
+      chatroomButtonContainer.innerHTML = temp;
 
-        function switchChatRoom(roomID) {
-            console.log(roomID);
-        }
+      document.getElementById("send-btn").addEventListener("click", function () {
+        switchChatRoom(currentChatRoom);
+      }, false);
 
-        window.addEventListener("load", start, false);
-    </script>
+      switchChatRoom(currentChatRoom);
+    }
+
+    function switchChatRoom(roomID) {
+      currentChatRoom = roomID;
+      // console.log(roomID);
+      let msgs = httpGet("/msg/get");
+      msgs = JSON.parse(msgs)["msgs"];
+      let msgDetail = document.getElementById("msg-detail");
+      let detail = "";
+
+      for (let i = 0; i < msgs.length; i++) {
+        detail += "<label class='msg position-absolute start-0 border border-3 border-primary rounded-pill'>&nbsp;" +
+          msgs[i] +
+          "&nbsp;</label><br><br>";
+      }
+      msgDetail.innerHTML = detail;
+    }
+
+    function sendMsg(msg) {
+      let resp = httpPost("/msg/send", msg);
+      if (resp != 200) {
+        console.log("failed to send msg", resp);
+        return;
+      }
+      console.log("success");
+      switchChatRoom(currentChatRoom);
+    }
+
+    window.addEventListener("load", start, false);
+  </script>
 </head>
 
 <body>
-    <div class="col-6 col-md-4">
-        <h1 class="position-absolute fs-3 top-0 start-0" id="chatroom-list">Chatroom List</h1>
-        <span id="chatroom-button-container"></span>
-    </div>
-    <div class="col-sm-6 col-md-8">
-        <div class="p-3 mb-2 bg-dark text-white position-relative" id="main-bg">
-            <label id="member-list" class="position-absolute fs-3 top-0 end-0"></label>
+  <div class="col-3" id="left-list">
+    <h1 class="position-absolute fs-3 top-0 start-0" id="chatroom-list">Chatroom List</h1>
+    <span id="chatroom-button-container"></span>
+  </div>
+  <div class="col-9">
+    <div class="p-3 mb-2 bg-dark text-white position-relative" id="main-bg">
+      <label id="member-list" class="position-absolute fs-3 top-0 end-0"></label>
 
-            <div id="msg-detail" class="fs-2 position-relative">
-                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg1</label>
-                <br>
-                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg2</label>
-                <br>
-                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg3</label>
-                <br>
-                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg4</label>
-                <br>
-                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg5</label>
-                <br>
-                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg6</label>
-                <br>
-                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg7</label>
-                <br>
-                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg8</label>
-                <br>
-                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg9</label>
-                <br>
-                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgA</label>
-                <br>
-                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgB</label>
-                <br>
-                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgC</label>
-                <br>
-                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgD</label>
-                <br>
-                <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgE</label>
-                <br>
-                <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgF</label>
-            </div>
+      <div id="msg-detail" class="fs-2 position-relative">
+        <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg1</label>
+        <br><br>
+        <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg2</label>
+        <br><br>
+        <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg3</label>
+        <br><br>
+        <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg4</label>
+        <br><br>
+        <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg5</label>
+        <br><br>
+        <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg6</label>
+        <br><br>
+        <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg7</label>
+        <br><br>
+        <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msg8</label>
+        <br><br>
+        <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msg9</label>
+        <br><br>
+        <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgA</label>
+        <br><br>
+        <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgB</label>
+        <br><br>
+        <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgC</label>
+        <br><br>
+        <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgD</label>
+        <br><br>
+        <label class="msg position-absolute end-0 border border-3 border-primary rounded-pill">msgE</label>
+        <br><br>
+        <label class="msg position-absolute start-0 border border-3 border-primary rounded-pill">msgF</label>
+      </div>
 
-            <br>
+      <br>
 
-            <div class="footer">
-                <div class="inline" id="buttons">
-                    <form>
-                        <button class="w-100 btn btn-lg btn-primary" type="submit"
-                            formaction="{{url_for('RoomRoutes.add_member')}}" formmethod="post">Add Member</button>
-                    </form>
-                    <label class="place-holder">space</label>
-                    <form>
-                        <button class="w-100 btn btn-lg btn-danger" type="submit"
-                            formaction="{{url_for('RoomRoutes.remove_member')}}" formmethod="post">Remove
-                            Member</button>
-                    </form>
-                    <label class="place-holder">space</label>
-                    <form>
-                        <button class="w-100 btn btn-lg btn-danger" type="submit"
-                            formaction="{{url_for('RoomRoutes.delete')}}" formmethod="post">Delete Channel</button>
-                    </form>
-                </div>
-            </div>
+      <div class="input">
+        <div id="tmp">
+          <form>
+            <input id="input-msg">
+            <button class="w-100 btn btn-lg btn-primary" type="submit" id="send-btn"
+              formaction="{{url_for('MsgRoutes.send')}}" formmethod="post">Send</button>
+          </form>
         </div>
+      </div>
+
+      <div class="footer">
+        <div class="inline" id="buttons">
+          <form>
+            <button class="w-100 btn btn-lg btn-primary" type="submit" formaction="{{url_for('RoomRoutes.add_member')}}"
+              formmethod="post">Add Member</button>
+          </form>
+          <label class="place-holder">space</label>
+          <form>
+            <button class="w-100 btn btn-lg btn-danger" type="submit"
+              formaction="{{url_for('RoomRoutes.remove_member')}}" formmethod="post">Remove
+              Member</button>
+          </form>
+          <label class="place-holder">space</label>
+          <form>
+            <button class="w-100 btn btn-lg btn-danger" type="submit" formaction="{{url_for('RoomRoutes.delete')}}"
+              formmethod="post">Delete Channel</button>
+          </form>
+        </div>
+      </div>
     </div>
+    <div class="ferr">
+      <div>
+        <span id="plchder">placeholder</span>
+        <label>please login or signup</label>
+        <h1 class="h1n">warning</h1>
+        <span id="spanning">
+          <br><br>
+        </span>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
