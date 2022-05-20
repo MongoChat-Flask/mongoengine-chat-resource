@@ -1,4 +1,6 @@
 # flask-login module
+from datetime import datetime
+
 from flask_login import UserMixin
 # Database module
 from mongoengine import *
@@ -17,10 +19,14 @@ class Users(Document, UserMixin):
     Account = StringField(unique=True, required=True, min_length=9, max_length=20)
     Email = EmailField(unique=True, required=True)
     Password = BinaryField(required=True)
-    Friends = ListField(ReferenceField('self', reverse_delete_rule=CASCADE))
     ChatRooms = ListField()
     EmailVaildated = BooleanField(default=False)
-    Online = BooleanField(default=False)
+    Created = DateTimeField(default=datetime.utcnow())
+    '''
+    設計: 註冊成功之後，將會依照索引並刪除過期文檔
+    '''
+    LoginAt = DateTimeField(required=False)
+    LogoutAt = DateTimeField(required=False)
 
     @classmethod
     def find_by_Account(cls, Account) -> "Users":

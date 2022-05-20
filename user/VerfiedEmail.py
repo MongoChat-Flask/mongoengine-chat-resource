@@ -5,12 +5,24 @@ from flask import Response, redirect, url_for, session
 from itsdangerous import SignatureExpired
 from user.config import *
 from app import db
+from flask_apscheduler import APScheduler
+import datetime
 import logging
 
 assert isinstance(db, object)
 
 
-def send(msgObj) -> str | Response:
+def deleteInvalidAccount(taskName, InvalidAccount):
+    from models.Users import Users
+    user = Users.objects(Email=InvalidAccount).first()
+    if not user.EmailVaildated:
+        user.delete()
+        print("該帳號為非法用戶! 已確定刪除!\n")
+    else:
+        print("該帳號為合法用戶!\n")
+
+
+def send(msgObj, id) -> str | Response:
     # 連線到 SMTP Server
     try:
         # 可以從網路上找到主機名稱和連線埠
@@ -18,6 +30,13 @@ def send(msgObj) -> str | Response:
         server.login(msgObj[1], msgObj[2])
         server.send_message(msgObj[0])
         server.close()  # 發送完成後關閉連線
+        from models.Users import Users
+        user = Users.objects(Email=id).first()
+        aps = APScheduler()
+        aps.add_job(func=deleteInvalidAccount, args=('一次性任務', id),
+                    next_run_time=datetime.datetime.now().astimezone() + datetime.timedelta(seconds=65),
+                    timezone='Asia/Taipei', id=id)
+        aps.start()
         logging.info("user.methods.VerifiedEmail.send: Send Complete!")
         session["signal"] = {"login": True, "getinfo": True, "message": Message["Sign-up-success"]}
         return redirect(url_for('UserRoutes.sec'))

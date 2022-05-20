@@ -71,7 +71,7 @@ def login():
         pwd = form.Password.data
         remember = form.Remember.data
         user = Users.find_by_Email(email)
-        # print(user.id)  # and user.Online
+        # 若 user 成功登入 -> 更新時間: LoginAt、LogoutAt (第一次為相同)
         if user and user.match_password(password=pwd):
             login_user(user=user, remember=remember)
             # flash('You were successfully logged in', category='success')

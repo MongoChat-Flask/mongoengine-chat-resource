@@ -1,14 +1,13 @@
 from flask_socketio import send, join_room, leave_room, emit
 from time import localtime, strftime
 from app import app, socketio
-from flask import url_for, render_template
+from flask import url_for
 from werkzeug.utils import redirect
 
 
 @app.route('/')
 def startpoint():
     return redirect(url_for('UserRoutes.start'))
-
 
 
 @socketio.on('message')
@@ -37,6 +36,10 @@ def join(data):
     send({
         'msg': data['username'] + " has left the " + data['room'] + " room."
     }, room=data['room'])  # 傳送至指定的room
+
+
+def MongoScheduledTask():
+    print("此任务每 3600 秒运行一次!\n任務: 清除過期不合法帳戶.")
 
 
 if __name__ == '__main__':

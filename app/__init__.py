@@ -2,16 +2,17 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_bcrypt import Bcrypt
+# 登錄管理員
 from flask_login import LoginManager
 from app.config import *
 # Routes modules
 from routes.ChatRoutes import RoomRoutes
 from routes.MsgRoutes import MsgRoutes
 from routes.UserRoutes import UserRoutes
-# Mongoengine
+# MongoDB
 from mongoengine import connect
 # SocketIO
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
 app.config.from_object(Config)

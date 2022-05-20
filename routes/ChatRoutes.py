@@ -11,7 +11,8 @@ ROOMS = ["global", "users"]
 @RoomRoutes.route('/index', methods=['GET'])
 # @login_required
 def index():
-    return render_template('chat.html', username=current_user.Account, rooms=ROOMS)
+    # return render_template('chat.html', username=current_user.Account, rooms=ROOMS)
+    return render_template('ChatRoom.html')
 
 
 @RoomRoutes.route('/getMemberList', methods=['GET'])

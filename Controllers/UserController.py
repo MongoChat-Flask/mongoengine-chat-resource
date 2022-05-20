@@ -29,7 +29,7 @@ def CreateUser(account: str, email: str, password: bytes) -> "flask.Response":
     session["signal"] = {"login": True, "getinfo": True, "message": ""}
     try:
         from models.Users import Users
-        user = Users(Account=account, Email=email, Password=password, Friends=[], ChatRooms=[])
+        user = Users(Account=account, Email=email, Password=password, ChatRooms=[])
         print(user)
         user.save()
         print("save")
@@ -39,7 +39,7 @@ def CreateUser(account: str, email: str, password: bytes) -> "flask.Response":
             # 送出驗證郵件(Gmail)
             print("send")
             flash('恭喜! 現在去接收郵件激活帳號吧!', category='success')
-            return send(msgObj)
+            return send(msgObj, user.Email)
         else:
             session["signal"]["message"] = Message["Error_msg1"]
             return redirect(url_for('UserRoutes.sec'))
