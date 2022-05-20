@@ -34,7 +34,8 @@
       chatListLabel.innerHTML = "chatroom list(_id): ";
       let temp = "";
       for (let i = 0; i < chatList["_id"].length; i++) {
-        temp += "<button class='w-50 btn btn-lg btn-primary left-list-btn' onclick='switchChatRoom(" + chatList["_id"][i] + ")'>chatroom" + chatList["_id"][i] + "</button><br><br>";
+        temp += "<button class='w-50 btn btn-lg btn-primary left-list-btn' onclick='switchChatRoom(" + chatList["_id"][i] + ")'>chatroom" +
+          chatList["_id"][i] + "</button><br><br>";
       }
       chatroomButtonContainer.innerHTML = temp;
 
@@ -59,6 +60,16 @@
           "&nbsp;</label><br><br>";
       }
       msgDetail.innerHTML = detail;
+    }
+
+    function sendMsg(msg) {
+      let resp = httpPost("/msg/send", msg);
+      if (resp != 200) {
+        console.log("failed to send msg", resp);
+        return;
+      }
+      console.log("success");
+      switchChatRoom(currentChatRoom);
     }
 
     window.addEventListener("load", start, false);
@@ -136,6 +147,16 @@
               formmethod="post">Delete Channel</button>
           </form>
         </div>
+      </div>
+    </div>
+    <div class="ferr">
+      <div>
+        <span id="plchder">placeholder</span>
+        <label>please login or signup</label>
+        <h1 class="h1n">warning</h1>
+        <span id="spanning">
+          <br><br>
+        </span>
       </div>
     </div>
   </div>
