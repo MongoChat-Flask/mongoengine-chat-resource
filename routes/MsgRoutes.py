@@ -4,6 +4,6 @@ from flask import Blueprint
 MsgRoutes = Blueprint('MsgRoutes', __name__)
 
 
-@MsgRoutes.route('/send', methods=['GET'])
+@MsgRoutes.route('/send', methods=['POST'])
 def send():
     return "send_message()"
