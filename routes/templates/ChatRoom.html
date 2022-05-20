@@ -89,6 +89,16 @@
 
             <br>
 
+            <div class="input">
+                <div id="tmp">
+                    <form>
+                        <input id="input-msg">
+                        <button class="w-100 btn btn-lg btn-primary" type="submit" id="send-btn"
+                            formaction="{{url_for('MsgRoutes.send')}}" formmethod="post">Send</button>
+                    </form>
+                </div>
+            </div>
+
             <div class="footer">
                 <div class="inline" id="buttons">
                     <form>
