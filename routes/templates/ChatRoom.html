@@ -28,7 +28,7 @@
       chatroomButtonContainer = document.getElementById("chatroom-button-container");
       let cont = httpGet("getMemberList");
       let list = JSON.parse(cont);
-      memberListLabel.innerHTML = "member list(_id): " + list["_id"] + "&nbsp;&nbsp;&nbsp;&nbsp;### 需提供由_id轉換成名稱的function ###";
+      memberListLabel.innerHTML = "member list(_id): [" + list["_id"] + "]";
       cont = httpGet("/user/chat_room_list");
       let chatList = JSON.parse(cont);
       chatListLabel.innerHTML = "chatroom list(_id): ";
@@ -60,14 +60,19 @@
           "&nbsp;</label><br><br>";
       }
       msgDetail.innerHTML = detail;
+      msgDetail.scrollTop = msgDetail.scrollHeight;
     }
 
-    function sendMsg(msg) {
-      let resp = httpPost("/msg/send", msg);
-      if (resp != 200) {
-        console.log("failed to send msg", resp);
-        return;
-      }
+    function sendMsg() {
+      let msg = document.getElementById("input-msg").value;
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", "/msg/send", false);
+      xmlHttp.send(null);
+      // let resp = httpPost("/msg/send", {"msg": msg});
+      // if (resp != 200) {
+      //   console.log("failed to send msg", resp);
+      //   return;
+      // }
       console.log("success");
       switchChatRoom(currentChatRoom);
     }
@@ -121,10 +126,9 @@
 
       <div class="input">
         <div id="tmp">
-          <form>
-            <input id="input-msg">
-            <button class="w-100 btn btn-lg btn-primary" type="submit" id="send-btn"
-              formaction="{{url_for('MsgRoutes.send')}}" formmethod="post">Send</button>
+          <form action="/msg/send" method="post">
+            <input id="input-msg" name="msg">
+            <button class="w-100 btn btn-lg btn-primary" id="send-btn">Send</button>
           </form>
         </div>
       </div>
