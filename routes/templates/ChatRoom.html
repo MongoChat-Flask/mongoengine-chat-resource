@@ -28,7 +28,7 @@
       chatroomButtonContainer = document.getElementById("chatroom-button-container");
       let cont = httpGet("getMemberList");
       let list = JSON.parse(cont);
-      memberListLabel.innerHTML = "member list(_id): " + list["_id"] + "&nbsp;&nbsp;&nbsp;&nbsp;### 需提供由_id轉換成名稱的function ###";
+      memberListLabel.innerHTML = "member list(_id): [" + list["_id"] + "]";
       cont = httpGet("/user/chat_room_list");
       let chatList = JSON.parse(cont);
       chatListLabel.innerHTML = "chatroom list(_id): ";
@@ -44,6 +44,7 @@
       }, false);
 
       switchChatRoom(currentChatRoom);
+      setInterval(200, switchChatRoom(currentChatRoom));
     }
 
     function switchChatRoom(roomID) {
@@ -60,14 +61,19 @@
           "&nbsp;</label><br><br>";
       }
       msgDetail.innerHTML = detail;
+      msgDetail.scrollTop = msgDetail.scrollHeight;
     }
 
-    function sendMsg(msg) {
-      let resp = httpPost("/msg/send", msg);
-      if (resp != 200) {
-        console.log("failed to send msg", resp);
-        return;
-      }
+    function sendMsg() {
+      let msg = document.getElementById("input-msg").value;
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", "/msg/send", false);
+      xmlHttp.send(null);
+      // let resp = httpPost("/msg/send", {"msg": msg});
+      // if (resp != 200) {
+      //   console.log("failed to send msg", resp);
+      //   return;
+      // }
       console.log("success");
       switchChatRoom(currentChatRoom);
     }
@@ -77,6 +83,56 @@
 </head>
 
 <body>
+  <ul class="navbar-nav navTitle" style="display: none;">
+    <li class="nav-item">
+      <a class="nav-link" href="#" id="nav-game" style="color: #BBBB00; font-size: large;"
+        onmouseover="this.style.color='yellow'" onmouseout="this.style.color='#BBBB00'"><strong>&nbsp;</strong></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#rank" id="nav-rank" style="color: white; font-size: large;"
+        onmouseover="this.style.color='#00A4EB'" onmouseout="this.style.color='white'"></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#record" id="nav-record" style="color:white; font-size: large;"
+        onmouseover="this.style.color='#00A4EB'" onmouseout="this.style.color='white'"></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#about" id="nav-about" style="color:white; font-size: large;"
+        onmouseover="this.style.color='#00A4EB'" onmouseout="this.style.color='white'"></a>
+    </li>
+    <li class="nav-item" style="vertical-align: middle;padding-left: 3px;">
+      <input type="image" id="language" onclick="reverseLanguage()" src="imgs/blank.png" width="30" height="30"
+        style="margin-top: 5px;" alt="imgs/blank.png">
+    </li>
+  </ul>
+  </nav>
+
+  <div id="titlebar2-div" style="display: none;">
+    <nav class="navbar navbar-expand-sm" id="titlebar2" style="background-color: transparent;">
+      <ul class="navbar-nav nav rankBar">
+        <li class="nav-item rank-nav-bar" style="float:left; width: 32%;"><a data-toggle="tab" id="ai-weak-label"
+            class="nav-link" href="#menu1" onclick="getD(0)" onmouseover="this.style.color='#00A4EB'"
+            onmouseout="this.style.color='#343A40'"
+            style="font-size: 1.5em; text-decoration: none; width: 100%; text-align: center; background-color: #b2bfcf;color: #343A40; height: 55px; padding-top: 13px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; border: 2px solid #dddddd; white-space: nowrap;">
+            room1</a>
+        </li>
+        <li class="nav-item rank-nav-bar" style="float:left; width: 32%;"><a data-toggle="tab" id="ai-medium-label"
+            class="nav-link" href="#menu2" onclick="getD(1)" onmouseover="this.style.color='#00A4EB'"
+            onmouseout="this.style.color='#343A40'"
+            style="font-size: 1.5em; text-decoration: none; width: 100%; text-align: center;  background-color: #aac8e1; color: #343A40; height: 55px; padding-top: 13px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; border: 2px solid #dddddd; white-space: nowrap;">
+            room2
+          </a></li>
+        <li class="nav-item rank-nav-bar" style="float:left; width: 32%;"><a data-toggle="tab" id="ai-hard-label"
+            class="nav-link" href="#menu3" onclick="getD(2)" onmouseover="this.style.color='#00A4EB'"
+            onmouseout="this.style.color='#343A40'"
+            style="font-size: 1.5em; text-decoration: none; width: 100%; text-align: center;background-color: #A2D2F2; color: #343A40; height: 55px; padding-top: 13px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; border: 2px solid #dddddd; white-space: nowrap;">
+            room3
+          </a></li>
+      </ul>
+    </nav>
+  </div>
+
+  
   <div class="col-3" id="left-list">
     <h1 class="position-absolute fs-3 top-0 start-0" id="chatroom-list">Chatroom List</h1>
     <span id="chatroom-button-container"></span>
@@ -121,10 +177,9 @@
 
       <div class="input">
         <div id="tmp">
-          <form>
-            <input id="input-msg">
-            <button class="w-100 btn btn-lg btn-primary" type="submit" id="send-btn"
-              formaction="{{url_for('MsgRoutes.send')}}" formmethod="post">Send</button>
+          <form action="/msg/send" method="post">
+            <input id="input-msg" name="msg">
+            <button class="w-100 btn btn-lg btn-primary" id="send-btn">Send</button>
           </form>
         </div>
       </div>
