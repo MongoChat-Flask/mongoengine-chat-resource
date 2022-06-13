@@ -23,9 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#user_message').focus();
     }
 
+//    function deleteMsg(id) {
+//        socket.emit('delete-event', {
+//            'id': id
+//        });
+//    }
     socket.on('connect', () => {
         joinRoom();
     });
+
 
     // Display all incoming messages 從 main.py def message出發!
     socket.on('message', data => {
@@ -96,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#user_message').value = '';  // 清空"輸入訊息欄位"
         }
     }
+
 
 
     // Print system message

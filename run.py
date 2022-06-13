@@ -29,12 +29,17 @@ def Handle_Messasge(data):
     send(messagejson, room=room)
 
 
+# @socketio.on('delete-event')  # 對應 JS 的 socket.emit('delete')
+# def delete(data):
+#     print(f'id: {data}')
+#
+
 @socketio.on('join')  # 對應 JS 的 socket.emit('join')
 def join(data):
     join_room(data['room'])
     time_stamp = strftime('%b-%d %I:%M%p', localtime())
     send({
-        'username':'系統',
+        'username': '系統',
         'msg': data['username'] + " has joined the " + data['room'] + " room.",
         'time_stamp': time_stamp
     }, room=data['room'])

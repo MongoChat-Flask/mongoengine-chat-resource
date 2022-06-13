@@ -23,13 +23,13 @@ def index():
             onemsg = json.loads(i.to_json())
             timeTemp = float(onemsg['Timestamp']['$date']/1000)
             time_stamp = time.strftime("%b-%d %I:%M%p", time.localtime(timeTemp))
-            print(time_stamp)
+            # print(time_stamp)
             messagejson = {"id": onemsg['_id']['$oid'],"username": onemsg['Message_creator'], "msg":onemsg['Context'], "time_stamp": time_stamp}
             msgArray.append(messagejson)
     except Exception as e:
         print(e)
     finally:
-        print(msgArray)
+        # print(msgArray)
         return render_template('chat-main.html', username=current_user.Account, rooms=ROOMS, msgArray=msgArray)
 
 
