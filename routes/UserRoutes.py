@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, request, render_template
 from flask_login import login_user, current_user, logout_user, login_required
 from Controllers.UserController import *
@@ -58,6 +60,7 @@ def Activate_account():
     return CheckUser(data['token'], data['random'])
 
 
+
 # 登入
 @UserRoutes.route('/login', methods=['GET', 'POST'])
 def login():
@@ -92,31 +95,35 @@ def login():
 @UserRoutes.route('/logout', methods=['GET'])
 @login_required
 def logout():  # 使用者註冊
+    from models.Users import Users
+    user = Users.find_by_Email(current_user.Email)
+    user.LogoutAt = datetime.utcnow()
+    user.save()
     logout_user()
     flash('You were successfully logged out', category='success')
     return redirect(url_for('UserRoutes.login'))
 
 
 # 讀取資訊
-@UserRoutes.route('/info', methods=['GET'])
-@login_required
-def info():
-    return "InfoUser()"
+# @UserRoutes.route('/info', methods=['GET'])
+# @login_required
+# def info():
+#     return "InfoUser()"
 
 
 # 讀取聊天室名單
-@UserRoutes.route('/chat_room_list', methods=['GET'])
-#@login_required
-def chat_room_list():
-    # must follow JSON format
-    return '{"_id":["1","2","4","5"]}'
+# @UserRoutes.route('/chat_room_list', methods=['GET'])
+# #@login_required
+# def chat_room_list():
+#     # must follow JSON format
+#     return '{"_id":["1","2","4","5"]}'
 
 
 # 編輯
-@UserRoutes.route('/edit', methods=['GET'])
-@login_required
-def edit():
-    return "EditUser()"
+# @UserRoutes.route('/edit', methods=['GET'])
+# @login_required
+# def edit():
+#     return "EditUser()"
 
 
 # 刪除

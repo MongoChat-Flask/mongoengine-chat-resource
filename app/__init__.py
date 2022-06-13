@@ -30,3 +30,4 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'UserRoutes.login'
 login_manager.login_message = '你必須登入才能存取該資源'
 login_manager.login_message_category = 'info'
+

@@ -1,13 +1,16 @@
-from mongoengine import Document, ReferenceField, StringField, DateTimeField, BinaryField, DO_NOTHING, CASCADE
 from datetime import datetime
+from mongoengine import *
 
 
 class Message(Document):
-    from models.ChatRoom import ChatRoom
-    Room_name = StringField(ReferenceField(ChatRoom, reverse_delete_rule=CASCADE, required=True))
     from models.Users import Users
     Message_creator = ReferenceField(Users, reverse_delete_rule=DO_NOTHING, required=True)
     Context = StringField(required=False)
-    Image = BinaryField(required=False)
-    Video_url = StringField(required=False)
-    Timestamp = DateTimeField(default=datetime.utcnow)
+    Timestamp = DateTimeField(default=datetime.utcnow())
+
+    # @classmethod
+    # def find_by_Timestamp(cls, Timestamp):
+    #     print(type(Timestamp))
+    #     # raw_query = {'Timestamp': {'$gte': Timestamp}}
+    #     # cls.objects().order_by('Timestamp')
+    #     return cls.objects()

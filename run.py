@@ -1,3 +1,5 @@
+import datetime
+
 from flask_socketio import send, join_room, leave_room, emit
 from time import localtime, strftime
 from app import app, socketio
@@ -19,14 +21,22 @@ def Handle_Messasge(data):
     room = data["room"]
     # Set timestamp
     time_stamp = strftime('%b-%d %I:%M%p', localtime())
-    send({"username": username, "msg": msg, "time_stamp": time_stamp}, room=room)
+    messagejson = {"username": username, "msg": msg, "time_stamp": time_stamp}
+    # Insert Message
+    from models.Message import Message
+    mongoMsg = Message(Message_creator=username, Context=msg, Timestamp=datetime.datetime.utcnow())
+    mongoMsg.save()
+    send(messagejson, room=room)
 
 
 @socketio.on('join')  # 對應 JS 的 socket.emit('join')
 def join(data):
     join_room(data['room'])
+    time_stamp = strftime('%b-%d %I:%M%p', localtime())
     send({
+        'username':'系統',
         'msg': data['username'] + " has joined the " + data['room'] + " room.",
+        'time_stamp': time_stamp
     }, room=data['room'])
 
 
@@ -38,8 +48,8 @@ def join(data):
     }, room=data['room'])  # 傳送至指定的room
 
 
-def MongoScheduledTask():
-    print("此任务每 3600 秒运行一次!\n任務: 清除過期不合法帳戶.")
+# def MongoScheduledTask():
+#     print("此任务每 3600 秒运行一次!\n任務: 清除過期不合法帳戶.")
 
 
 if __name__ == '__main__':

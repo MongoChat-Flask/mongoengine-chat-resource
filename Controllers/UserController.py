@@ -29,7 +29,7 @@ def CreateUser(account: str, email: str, password: bytes) -> "flask.Response":
     session["signal"] = {"login": True, "getinfo": True, "message": ""}
     try:
         from models.Users import Users
-        user = Users(Account=account, Email=email, Password=password, ChatRooms=[])
+        user = Users(Account=account, Email=email, Password=password)
         print(user)
         user.save()
         print("save")
@@ -72,37 +72,21 @@ def CheckUser(token, random) -> str | Response:
         return redirect(url_for('UserRoutes.sec'))
 
 
-def LoginUser(email: str, password: str) -> str | Response:
-    """login = (redirect_to聊天頁面) ? (有該帳號存在且經過驗證) : (重新導引至登入頁面並依狀況顯示其相應行為)"""
-
-    return ""
-
-
-def LogoutUser():
-    """Logout = (redirect_to登入頁面)"""
-    return ""
-
-
-def EditUser():
-    """Edit = (切至聊天頁面, 顯示成功通知懸浮窗) ? (編輯且提交成功) : (失敗、回推至初始狀態，redirect_to聊天頁面並顯示失敗通知)"""
-    return ""
-
-
-def DeleteUser(account: str, password: str):
-    """Delete = (切至登入頁面) ? (成功刪除帳號) : (失敗?，可能為Bug，need修復)"""
-    return ""
-
-
-def PendingRequest_from_Friend():
-    """PendingRequest = (Add Friend to list) ? (i allow[True]) : (i do not allow[False])"""
-    return ""
-
-
-def PendingRequest_from_Chatroom():
-    """PendingRequest = (Add ChatRoom to list) ? (i allow[True]) : (i do not allow[False])"""
-    return ""
-
-
-def ReadUser():
-    """ReadUser = (切至User資訊頁面並顯示) ? (成功讀取User) : (Error:可能為伺服器錯誤)"""
-    return ""
+# def EditUser():
+#     """Edit = (切至聊天頁面, 顯示成功通知懸浮窗) ? (編輯且提交成功) : (失敗、回推至初始狀態，redirect_to聊天頁面並顯示失敗通知)"""
+#     return ""
+#
+#
+# def PendingRequest_from_Friend():
+#     """PendingRequest = (Add Friend to list) ? (i allow[True]) : (i do not allow[False])"""
+#     return ""
+#
+#
+# def PendingRequest_from_Chatroom():
+#     """PendingRequest = (Add ChatRoom to list) ? (i allow[True]) : (i do not allow[False])"""
+#     return ""
+#
+#
+# def ReadUser():
+#     """ReadUser = (切至User資訊頁面並顯示) ? (成功讀取User) : (Error:可能為伺服器錯誤)"""
+#     return ""

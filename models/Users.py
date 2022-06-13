@@ -19,14 +19,12 @@ class Users(Document, UserMixin):
     Account = StringField(unique=True, required=True, min_length=9, max_length=20)
     Email = EmailField(unique=True, required=True)
     Password = BinaryField(required=True)
-    ChatRooms = ListField()
     EmailVaildated = BooleanField(default=False)
     Created = DateTimeField(default=datetime.utcnow())
     '''
     設計: 註冊成功之後，將會依照索引並刪除過期文檔
     '''
-    LoginAt = DateTimeField(required=False)
-    LogoutAt = DateTimeField(required=False)
+    LogoutAt = DateTimeField(default=datetime.utcnow())
 
     @classmethod
     def find_by_Account(cls, Account) -> "Users":
