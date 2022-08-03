@@ -1,6 +1,8 @@
 import smtplib
 import uuid
 import email.message
+from typing import Union
+
 from flask import Response, redirect, url_for, session
 from itsdangerous import SignatureExpired
 from user.config import *
@@ -22,7 +24,7 @@ def deleteInvalidAccount(taskName, InvalidAccount):
         print("該帳號為合法用戶!\n")
 
 
-def send(msgObj, id) -> str | Response:
+def send(msgObj, id) -> Union[str, Response]:
     # 連線到 SMTP Server
     try:
         # 可以從網路上找到主機名稱和連線埠

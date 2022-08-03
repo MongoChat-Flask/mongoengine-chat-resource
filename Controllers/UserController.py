@@ -1,3 +1,5 @@
+from typing import Union
+
 import mongoengine
 # 不能刪! 此行做為連接 Mongodb Atlas
 import flask
@@ -52,7 +54,7 @@ def CreateUser(account: str, email: str, password: bytes) -> "flask.Response":
         return redirect(url_for('UserRoutes.sec'))
 
 
-def CheckUser(token, random) -> str | Response:
+def CheckUser(token, random) -> Union[str, Response]:
     """Activate = (重新導引至登入頁面並通知成功及接續步驟) ? (若為有效電子郵件) : (重新導引至登入頁面並通知失敗原因)"""
     session["signal"] = {"login": True, "getinfo": True, "message": ""}
     email = check_url(token, random)
