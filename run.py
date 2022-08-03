@@ -1,6 +1,5 @@
 import os
 import datetime
-porta = int(os.environ.get('PORT', 5000))
 from flask_socketio import send, join_room, leave_room, emit
 from time import localtime, strftime
 from app import app, socketio
@@ -59,5 +58,5 @@ def join(data):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=porta)
+    socketio.run(app)
     # app.run()
