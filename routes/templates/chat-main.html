@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="{{url_for('.static', filename='css/style.css')}}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    const rooms = `{{rooms[0]}}`;// 從mongodb提取(index: Room_name:1, timestamp:1)
+    const username = `{{ username }}`;
+  </script>
+  <!-- Bootstrap 5 -->
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+   <!--Socket JS-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  <!--Custom SocketIO JS-->
+  <script type="text/javascript" src="{{ url_for('.static', filename='js/socketio.js') }}" ></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-light bg-dark">
+        <!-- 這裡會用到Username!!、logout、delete、About -->
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 link-light">{{username}} 聊天室: {{rooms[0]}}</span>
+            <div class="d-flax">
+                <div class="btn-group" id="logout-btn">
+                    <a href="{{ url_for('UserRoutes.logout') }}" class="btn btn-outline-info"><!--改 href-->
+                        <i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> 帳號登出
+                    </a>
+                </div>
+                <div class="btn-group" id="delete-btn">
+                    <a href="{{ url_for('UserRoutes.delete') }}" class="btn btn-outline-danger"><!--改 href-->
+                        <i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> 帳號刪除
+                    </a>
+                </div>
+                <div class="btn-group" id="about-btn">
+                    <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                       關於這網站
+                    </button>
+                </div>
+                <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">關於聊天室(肺腑之言😭)</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            [聊天室前端 + 後端]<br>雖然有很多可以去嘗試，但還請請為我加油!!
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+            </div>
+        </div>
+    </nav>
+  <div class="chat_container bg-white border border-success rounded border-5 rounded-3">
+    <div class="col-12 chat_box">
+        <div id="chatRoom tab-content" class="chat_message">
+        <!-- 此處會用 PythonScript for loop 印出 所有房間(置入訊息之前) -->
+        <div class="tab-pane fade active show" style="overflow-y: scroll; height: 100%;" id="display-message-section" role="tabpanel">
+            {% if msgArray %}
+                {% for msg in msgArray %}
+                  {% if username == msg['username']%}
+                        <div class="iconTag message_row you-message">
+                          <div class="message-content dropstart">
+                            <div class="message-text" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                              <li><a class="dropdown-item" href="#">編輯</a></li>
+                              <li><a class="dropdown-item" id="msgdelete"  href="#">刪除</a></li>
+                              <li><a class="dropdown-item" href="#" onclick="copyToClipboard('id-{{msg['id']}}')">複製</a></li>
+                            </ul>
+                                <input id="id-{{msg['id']}}" type="text"  class="message-text" value="{{msg['msg']}}" readonly>
+                            </div>
+                            <div class="message-time">{{msg['time_stamp']}}</div>
+                          </div>
+                        </div>
+                    {% else %}
+                        <div class="message_row other-message">
+                          <div class="message-content">
+                            <img class="head" src="data:image/png;base64,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" alt="">
+                            <div class="message-text">{{msg['msg']}}</div>
+                            <div class="message-time">{{msg['time_stamp']}}</div>
+                          </div>
+                        </div>
+                  {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        </div>
+        <div class="chat_input">
+        <div class="sendMsg input-group mb-3">
+            <textarea id="user_message" class="form-control" style="resize: none;" aria-label="With textarea"></textarea>
+            <button id="send_message" class="btn btn-outline-secondary" type="button"><i class="fa fa-paper-plane send_icon"> SEND</i></button>
+        </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function copyToClipboard(id){
+        var s1 = "#";
+        let copyText = document.querySelector(s1+id);
+        copyText.select();
+        document.execCommand('copy');
+        alert('Copied!!');
+        }
+    </script>
+</body>
+</html>
