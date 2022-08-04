@@ -12,8 +12,6 @@ assert isinstance(db, object)
 @login_manager.user_loader
 def load_user(user_id):
     try:
-        from app import app
-        login_manager.init_app(app)
         return Users.objects(id=user_id).first()
     except Exception:
         return None
