@@ -58,4 +58,4 @@ def join(data):
 
 
 if __name__ == '__main__':
-    socketio.run(app, port=int(os.environ.get('PORT', '5000')))
+    socketio.run(app, port=int(os.environ.get('PORT', '5000')), debug=True)
