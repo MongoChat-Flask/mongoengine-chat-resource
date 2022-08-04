@@ -11,10 +11,7 @@ assert isinstance(db, object)
 
 @login_manager.user_loader
 def load_user(user_id):
-    try:
-        return Users.objects(id=user_id).first()
-    except Exception:
-        return None
+    return Users.objects(id=user_id).first()
 
 
 class Users(Document, UserMixin):
