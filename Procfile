@@ -1,1 +1,1 @@
-web: gunicorn --worker-class eventlet -w 4 run:app
+web: gunicorn --worker-class eventlet -w 2 run:app
