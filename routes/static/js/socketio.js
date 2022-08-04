@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Connect to websocket location.protocol
     //var socket = io.connect('http://' + document.domain + ':' + location.port);
     var protocol = window.location.protocol;
-    var socket = io.connect(protocol + '//' + document.domain + ':' + location.port + namespace);
+    var socket = io.connect(protocol + '//' + document.domain + ':' + location.port + '/chat-r/index');
     // Set default room
     let room = "global"
 
