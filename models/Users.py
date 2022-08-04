@@ -9,9 +9,12 @@ from app import db, login_manager
 assert isinstance(db, object)
 
 
-@login_manager.request_loader
+@login_manager.user_loader
 def load_user(user_id):
-    return Users.objects(id=user_id).first()
+    try:
+        return Users.objects(id=user_id).first()
+    except Exception:
+        return None
 
 
 class Users(Document, UserMixin):
