@@ -1,1 +1,1 @@
-web: gunicorn --worker-class=gevent --worker-connections=1000 --workers=3 run:app
+web: gunicorn --worker-class eventlet -w 1 run:app
