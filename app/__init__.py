@@ -25,7 +25,7 @@ app.register_blueprint(RoomRoutes, url_prefix="/chat-r/")
 Bootstrap(app)
 db = connect(db="chat", host=DB_URI)
 bcrypt = Bcrypt(app)
-socketio = SocketIO(app, cors_allowed_origins='https://new-chat-ntou.herokuapp.com')
+socketio = SocketIO(app, cors_allowed_origins='https://new-chat-ntou.herokuapp.com/chat-r/index')
 login_manager = LoginManager(app)
 login_manager.login_view = 'UserRoutes.login'
 login_manager.login_message = '你必須登入才能存取該資源'
