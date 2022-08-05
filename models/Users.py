@@ -4,9 +4,9 @@ from datetime import datetime
 from flask_login import UserMixin
 # Database module
 from mongoengine import *
-from configstart import db, login_manager
+from configstart import login_manager
 
-assert isinstance(db, object)
+# assert isinstance(db, object)
 
 
 @login_manager.user_loader
