@@ -6,12 +6,12 @@ from typing import Union
 from flask import Response, redirect, url_for, session
 from itsdangerous import SignatureExpired
 from user.config import *
-from config import db
+import config
 from flask_apscheduler import APScheduler
 import datetime
 import logging
 
-assert isinstance(db, object)
+assert isinstance(config.db, object)
 
 
 def deleteInvalidAccount(taskName, InvalidAccount):

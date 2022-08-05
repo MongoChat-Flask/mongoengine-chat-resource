@@ -1,9 +1,9 @@
 from flask import url_for
 from werkzeug.utils import redirect
 
-from config import app
+import config
 
 
-@app.route('')
+@config.app.route('')
 def startpoint():
     return redirect(url_for('UserRoutes.start'))

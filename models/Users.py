@@ -4,12 +4,12 @@ from datetime import datetime
 from flask_login import UserMixin
 # Database module
 from mongoengine import *
-from config import db, login_manager
+import config
 
-assert isinstance(db, object)
+assert isinstance(config.db, object)
 
 
-@login_manager.user_loader
+@config.login_manager.user_loader
 def load_user(user_id):
     return Users.objects(id=user_id).first()
 
@@ -40,12 +40,12 @@ class Users(Document, UserMixin):
 
     @classmethod
     def hash_password(cls, password):
-        from config import bcrypt
-        return bcrypt.generate_password_hash(password)
+        import config
+        return config.bcrypt.generate_password_hash(password)
 
     def match_password(self, password):
-        from config import bcrypt
-        return bcrypt.check_password_hash(self.Password, password)
+        import config
+        return config.bcrypt.check_password_hash(self.Password, password)
 
     def __repr__(self):
         return '<User %r>' % self.Account

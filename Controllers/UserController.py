@@ -5,10 +5,10 @@ import mongoengine
 import flask
 from flask import Response, redirect, url_for, session, flash
 from user.config import *
-from config import db
+import config
 from user.VerfiedEmail import establish_mail_object, check_url, send
 
-assert isinstance(db, object)
+assert isinstance(config.db, object)
 
 
 # (Password)加密、解密之用途
