@@ -57,5 +57,5 @@ def join(data):
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
-    # configstart.run()
+    # socketio.run(app, debug=True)
+    app.run()
