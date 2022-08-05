@@ -1,17 +1,17 @@
 import datetime
 from flask_socketio import send, join_room, leave_room
 from time import localtime, strftime
-import config
+from config import app, socketio
 from flask import url_for
 from werkzeug.utils import redirect
 
 
-@config.app.route('/')
+@app.route('/')
 def startpoint():
     return redirect(url_for('UserRoutes.start'))
 
 
-@config.socketio.on('message')
+@socketio.on('message')
 def Handle_Messasge(data):
     print(f"\n\n{data}\n\n")
     """Broadcast messages"""

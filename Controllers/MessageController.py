@@ -1,8 +1,8 @@
 # 不能刪! 此行做為連接 Mongodb Atlas
 
-import config
+from config import db
 
-assert isinstance(config.db, object)
+assert isinstance(db, object)
 
 
 def send_message(sender_id: str, room_id: str, msg: str):
