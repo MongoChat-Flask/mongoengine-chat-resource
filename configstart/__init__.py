@@ -21,7 +21,7 @@ Bootstrap(app)
 db = connect(db="chat", host=os.environ.get('DB_URI'))
 # db = connect(db="chat", host=DB_URI)
 bcrypt = Bcrypt(app)
-socketio = SocketIO(app)
+socketio = SocketIO(app, logger=True, engineio_logger=True)
 login_manager = LoginManager(app)
 login_manager.init_app(app)
 login_manager.login_view = 'UserRoutes.login'
