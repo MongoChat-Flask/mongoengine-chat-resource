@@ -1,7 +1,7 @@
 import datetime
 from flask_socketio import send, join_room, leave_room
 from time import localtime, strftime
-from app import app, socketio
+from config import app, socketio
 from flask import url_for
 from werkzeug.utils import redirect
 
@@ -58,4 +58,4 @@ def join(data):
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
-    # app.run()
+    # config.run()

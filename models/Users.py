@@ -4,7 +4,7 @@ from datetime import datetime
 from flask_login import UserMixin
 # Database module
 from mongoengine import *
-from app import db, login_manager
+from config import db, login_manager
 
 assert isinstance(db, object)
 
@@ -40,11 +40,11 @@ class Users(Document, UserMixin):
 
     @classmethod
     def hash_password(cls, password):
-        from app import bcrypt
+        from config import bcrypt
         return bcrypt.generate_password_hash(password)
 
     def match_password(self, password):
-        from app import bcrypt
+        from config import bcrypt
         return bcrypt.check_password_hash(self.Password, password)
 
     def __repr__(self):

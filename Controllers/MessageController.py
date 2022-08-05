@@ -1,6 +1,6 @@
 # 不能刪! 此行做為連接 Mongodb Atlas
 
-from app import db
+from config import db
 
 assert isinstance(db, object)
 
