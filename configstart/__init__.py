@@ -1,4 +1,4 @@
-# Flask-App config
+# Flask-App configstart
 import os
 from flask import Flask
 from flask_bootstrap import Bootstrap

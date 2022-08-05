@@ -1,7 +1,7 @@
 from flask import url_for
 from werkzeug.utils import redirect
 
-from config import app
+from configstart import app
 
 
 @app.route('')

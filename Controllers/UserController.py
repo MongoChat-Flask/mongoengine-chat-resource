@@ -5,7 +5,7 @@ import mongoengine
 import flask
 from flask import Response, redirect, url_for, session, flash
 from user.config import *
-from config import db
+from configstart import db
 from user.VerfiedEmail import establish_mail_object, check_url, send
 
 assert isinstance(db, object)
