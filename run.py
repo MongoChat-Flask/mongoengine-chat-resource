@@ -1,6 +1,5 @@
-import os
 import datetime
-from flask_socketio import send, join_room, leave_room, emit
+from flask_socketio import send, join_room, leave_room
 from time import localtime, strftime
 from app import app, socketio
 from flask import url_for

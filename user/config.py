@@ -1,8 +1,9 @@
+import os
 from itsdangerous import URLSafeTimedSerializer
 
-gacc = 'monogchatoffical@gmail.com'
-gpwd = 'nwumxozrxzltgomt'
-secret_key = 'vrb65!v&817v*712lk]brene@'
+gacc = os.environ.get('MAIL_NAME')
+gpwd = os.environ.get('MAIL_PWD')
+secret_key = os.environ.get('MAIL_SECRET_KEY')
 s = URLSafeTimedSerializer(secret_key=secret_key)
 vertification_context = "<h4>" \
                         "😁你好，我是MongoChat官方維護人員，為你附上連結，以激活你的帳號及其功能" \

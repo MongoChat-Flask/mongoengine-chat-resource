@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint
 
 # 建立(註冊)路由的函式
 MsgRoutes = Blueprint('MsgRoutes', __name__)
@@ -18,12 +18,4 @@ MsgRoutes = Blueprint('MsgRoutes', __name__)
 #     # return '{"msgs": ["hi", "hello", "how", "he", "hand", "hover", "human"]}'
 #     return json.dumps(msgs)
 
-
-
-
-
-
-
-
-import json
 msgs = {"msgs": ["hi", "hello", "how", "he", "hand", "hover", "human"]}

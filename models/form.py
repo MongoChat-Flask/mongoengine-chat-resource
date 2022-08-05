@@ -3,8 +3,6 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError
 
 
-
-
 class RgisterForm(FlaskForm):
     """資料 網頁輸入表格 定義方式 [In html-form]"""
     Account = StringField('Nickname',

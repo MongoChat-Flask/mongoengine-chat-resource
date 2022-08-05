@@ -60,7 +60,6 @@ def Activate_account():
     return CheckUser(data['token'], data['random'])
 
 
-
 # 登入
 @UserRoutes.route('/login', methods=['GET', 'POST'])
 def login():

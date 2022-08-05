@@ -1,6 +1,4 @@
 import time
-from datetime import datetime
-
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
@@ -14,24 +12,24 @@ ROOMS = ["global"]
 @RoomRoutes.route('/index', methods=['GET'])
 @login_required
 def index():
-    msgArray=[]
+    msgArray = []
     try:
         from models.Message import Message
         for i in Message.objects():
             print(i.to_json())
             import json
             onemsg = json.loads(i.to_json())
-            timeTemp = float(onemsg['Timestamp']['$date']/1000)
+            timeTemp = float(onemsg['Timestamp']['$date'] / 1000)
             time_stamp = time.strftime("%b-%d %I:%M%p", time.localtime(timeTemp))
             # print(time_stamp)
-            messagejson = {"id": onemsg['_id']['$oid'],"username": onemsg['Message_creator'], "msg":onemsg['Context'], "time_stamp": time_stamp}
+            messagejson = {"id": onemsg['_id']['$oid'], "username": onemsg['Message_creator'], "msg": onemsg['Context'],
+                           "time_stamp": time_stamp}
             msgArray.append(messagejson)
     except Exception as e:
         print(e)
     finally:
         # print(msgArray)
         return render_template('chat-main.html', username=current_user.Account, rooms=ROOMS, msgArray=msgArray)
-
 
 # @RoomRoutes.route('/getMemberList', methods=['GET'])
 # def get_member_list():
