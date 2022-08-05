@@ -15,7 +15,7 @@ from mongoengine import connect
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
-app.config.from_object(os.environ.get('SECRET_KEY'))
+app.secret_key = os.environ.get('SECRET_KEY')
 # 啟動Bootstrap
 Bootstrap(app)
 db = connect(db="chat", host=os.environ.get('DB_URI'))
