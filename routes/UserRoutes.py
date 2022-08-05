@@ -2,7 +2,8 @@ from datetime import datetime
 
 from flask import Blueprint, request, render_template
 from flask_login import login_user, current_user, logout_user, login_required
-from Controllers.UserController import *
+# from Controllers.UserController import *
+from Controllers.UserController import CheckUser, session, redirect, url_for, CreateUser, Message, flash
 from models.form import LoginForm, RgisterForm
 
 # 建立(註冊)路由的函式
