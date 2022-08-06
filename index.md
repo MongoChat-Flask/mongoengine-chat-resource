@@ -50,8 +50,6 @@ tornado==6.2
 ```
 
 ### Web Deployed on Heroku:
-> [https://mongo-chat-2022.herokuapp.com/]
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+> As the saying goes,seeing is believeing. 
+> Here is a [link](https://mongo-chat-2022.herokuapp.com/)
+ to my website deployed on Heroku.
