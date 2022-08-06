@@ -47,3 +47,6 @@ Werkzeug==2.0.0
 WTForms==2.3.3
 Jinja2==3.1.1
 tornado==6.2
+
+## Web Deployed on Heroku:
+> [https://mongo-chat-2022.herokuapp.com/]
